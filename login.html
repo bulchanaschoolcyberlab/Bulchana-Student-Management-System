@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Bulchana SMS</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/auth.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">BULCHANA <span>SMS</span></a>
+    <a href="index.html" class="text-link">Home</a>
+  </header>
+
+  <main class="auth-wrapper">
+    <section class="auth-card">
+      <div class="eyebrow">WELCOME BACK</div>
+      <h1>Sign in</h1>
+      <p class="muted">Access your school account.</p>
+
+      <form id="loginForm">
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="Enter your email" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="Enter your password" required>
+
+        <button class="btn full" id="loginButton" type="submit">
+          Sign In
+        </button>
+      </form>
+
+      <p id="message" class="message"></p>
+      <p class="muted center">
+        Teacher without an account?
+        <a href="register.html">Register here</a>
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+    const button = document.getElementById("loginButton");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      button.disabled = true;
+      button.textContent = "Signing in...";
+      message.textContent = "";
+
+      try {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        const { error } = await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        const profile = await getMyProfile();
+
+        if (!profile) {
+          await supabaseClient.auth.signOut();
+          throw new Error("Your account has no system profile. Contact the administrator.");
+        }
+
+        window.location.href = dashboardForRole(profile.role);
+
+      } catch (error) {
+        message.textContent = error.message;
+        message.className = "message error";
+        button.disabled = false;
+        button.textContent = "Sign In";
+      }
+    });
+  </script>
+</body>
+</html>
