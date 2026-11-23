@@ -2,420 +2,258 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Bulchana Student Management System">
-<title>Bulchana Student Management System</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#172033}
-header{background:#102b52;color:white;padding:35px 18px;text-align:center}
-header h1{margin:0 0 10px}
-header p{margin:0;color:#cbd5e1}
-main{width:min(1000px,94%);margin:30px auto;min-height:55vh}
-.card{background:white;padding:24px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 15px #0000000c}
-h2{margin-top:0;color:#15345e}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:8px;font-size:15px}
-input{border:1px solid #cbd5e1;background:white}
-button{border:none;background:#1763c6;color:white;font-weight:bold;cursor:pointer}
-button:hover{background:#104d9c}
-button.secondary{background:#475569}
-button.danger{background:#b42318}
-.hidden{display:none!important}
-.message{padding:12px;border-radius:8px;margin:12px 0;overflow-wrap:anywhere}
-.success{background:#dcfce7;color:#166534}
-.error{background:#fee2e2;color:#991b1b}
-.info{background:#dbeafe;color:#1e40af}
-.code{font-size:23px;font-weight:bold;letter-spacing:2px;overflow-wrap:anywhere;color:#14532d;text-align:center;padding:15px;background:#dcfce7;border-radius:8px}
-.teacher{padding:12px;border-bottom:1px solid #e2e8f0}
-.muted{color:#64748b;font-size:14px}
-.portal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:22px}
-.portal{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 15px #0000000c}
-.portal h3{color:#15345e;margin-top:0}
-.portal p{color:#64748b;line-height:1.5}
-.portal a{display:block;text-align:center;text-decoration:none;background:#1763c6;color:white;padding:12px;border-radius:8px;font-weight:bold;margin-top:12px}
-.portal a.secondary{background:#475569}
-footer{background:#102b52;color:white;text-align:center;padding:30px 18px;margin-top:40px}
-footer h3{margin:0 0 10px;font-size:18px}
-footer p{margin:7px 0;color:#cbd5e1;font-size:14px;line-height:1.6}
-footer .department{color:white;font-weight:bold;margin-top:18px}
-footer .copyright{margin-top:15px;font-size:12px;color:#94a3b8}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bulchana School Student Management System. Empowering students and teachers through technology and education.">
+  <title>Bulchana School | Student Management System</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<header>
-  <h1>Bulchana Student Management System</h1>
-  <p>Smart School Administration & Academic Management</p>
-  <p style="margin-top:10px">Empowering Students Through Technology</p>
-</header>
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand">
+        <div class="brand-logo">B</div>
+        <div class="brand-text">
+          <strong>BULCHANA SCHOOL</strong>
+          <span>Student Management System</span>
+        </div>
+      </a>
 
-<main>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">
+        ☰
+      </button>
 
-  <!-- PORTAL NAVIGATION -->
-  <section class="portal-grid">
-
-    <div class="portal">
-      <h3>Student Registration</h3>
-      <p>Register as a new student using your school records and complete the registration process.</p>
-      <a href="student/register.html">Register as Student</a>
+      <nav class="nav" id="navigation">
+        <a href="index.html" class="active">Home</a>
+        <a href="about.html">About</a>
+        <a href="#portals">Portals</a>
+        <a href="contact.html">Contact</a>
+        <a href="student/login.html" class="nav-login">Sign In</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="portal">
-      <h3>Student Login</h3>
-      <p>Already registered? Sign in to access your student dashboard, results and payment information.</p>
-      <a href="#loginSection">Student Login</a>
+  <main>
+
+    <section class="hero">
+      <div class="container hero-content">
+        <div class="hero-text">
+          <span class="eyebrow">WELCOME TO BULCHANA SCHOOL</span>
+
+          <h1>Building a Better Future Through <span>Education.</span></h1>
+
+          <p>
+            Welcome to Bulchana School's digital platform.
+            Access academic information, manage student records,
+            connect with teachers and experience a smarter way
+            of managing education.
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#portals" class="btn btn-primary">
+              Explore Portals <span>→</span>
+            </a>
+            <a href="about.html" class="btn btn-outline">
+              Discover Our School
+            </a>
+          </div>
+
+          <div class="hero-note">
+            <span class="note-icon">✓</span>
+            <span>Education · Technology · Innovation</span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="visual-card">
+            <div class="visual-top">
+              <div class="visual-icon">B</div>
+              <div>
+                <strong>Bulchana School</strong>
+                <small>Digital Education Platform</small>
+              </div>
+            </div>
+
+            <div class="visual-main">
+              <span class="visual-label">OUR COMMITMENT</span>
+              <h2>Empowering the next generation.</h2>
+              <p>
+                Creating opportunities through quality education
+                and modern technology.
+              </p>
+            </div>
+
+            <div class="visual-bottom">
+              <span>LEARN</span>
+              <span>GROW</span>
+              <span>SUCCEED</span>
+            </div>
+          </div>
+
+          <div class="floating floating-one">🎓 Quality Education</div>
+          <div class="floating floating-two">💻 Digital Learning</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="welcome-section">
+      <div class="container welcome-grid">
+        <div>
+          <span class="section-label">OUR DIGITAL SCHOOL</span>
+          <h2>One platform. A better school experience.</h2>
+        </div>
+        <p>
+          Our Student Management System brings students, teachers
+          and administrators together in one organized digital
+          environment. It helps make academic management more
+          accessible, efficient and transparent.
+        </p>
+      </div>
+    </section>
+
+    <section class="portals-section" id="portals">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-label">ACCESS YOUR ACCOUNT</span>
+          <h2>Choose Your Portal</h2>
+          <p>Select the portal that matches your role at Bulchana School.</p>
+        </div>
+
+        <div class="portal-grid">
+
+          <article class="portal-card">
+            <div class="portal-icon student-icon">🎓</div>
+            <span class="portal-tag">FOR STUDENTS</span>
+            <h3>Student Portal</h3>
+            <p>
+              Access your academic records, results, payment
+              information and student dashboard.
+            </p>
+            <a href="student/login.html" class="portal-link">
+              Student Login <span>→</span>
+            </a>
+            <a href="student/register.html" class="portal-secondary">
+              New student? Register here
+            </a>
+          </article>
+
+          <article class="portal-card">
+            <div class="portal-icon teacher-icon">👨‍🏫</div>
+            <span class="portal-tag">FOR TEACHERS</span>
+            <h3>Teacher Portal</h3>
+            <p>
+              Manage assigned classes, access student information
+              and submit academic results.
+            </p>
+            <a href="teacher/login.html" class="portal-link">
+              Teacher Login <span>→</span>
+            </a>
+          </article>
+
+          <article class="portal-card">
+            <div class="portal-icon admin-icon">⚙️</div>
+            <span class="portal-tag">ADMINISTRATION</span>
+            <h3>Admin Portal</h3>
+            <p>
+              Manage school operations, student registrations,
+              teachers, payments and academic records.
+            </p>
+            <a href="admin/login.html" class="portal-link">
+              Administrator Login <span>→</span>
+            </a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-label">OUR PLATFORM</span>
+          <h2>Designed for Smarter School Management</h2>
+          <p>Bringing essential academic activities into one digital platform.</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-icon">📚</div>
+            <h3>Academic Records</h3>
+            <p>Organized student information and academic performance.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">📊</div>
+            <h3>Results Management</h3>
+            <p>Structured academic results and semester records.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">💳</div>
+            <h3>Payment Management</h3>
+            <p>Registration fee submissions and payment verification.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">🔐</div>
+            <h3>Secure Access</h3>
+            <p>Separate access for students, teachers and administrators.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="container cta-content">
+        <div>
+          <span class="section-label">BULCHANA SCHOOL</span>
+          <h2>Education meets innovation.</h2>
+          <p>Empowering Students Through Technology.</p>
+        </div>
+        <a href="#portals" class="btn btn-light">Access Your Portal →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <strong>BULCHANA SCHOOL</strong>
+        <p>Empowering Students Through Technology.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> Bulchana School. All rights reserved.</p>
+        <p>IT Department | Technology | Innovation</p>
+      </div>
     </div>
-
-    <div class="portal">
-      <h3>Teacher Portal</h3>
-      <p>Access your teacher account and manage your academic responsibilities.</p>
-      <a href="#loginSection" class="secondary">Teacher Login</a>
-    </div>
-
-    <div class="portal">
-      <h3>Administration</h3>
-      <p>Authorized administrators can manage teachers and school accounts.</p>
-      <a href="#loginSection" class="secondary">Admin Login</a>
-    </div>
-
-  </section>
-
-  <!-- LOGIN -->
-  <section id="loginSection" class="card">
-    <h2>Welcome Back</h2>
-    <p>Sign in to your account.</p>
-
-    <input id="loginEmail" type="email" placeholder="Email address">
-    <input id="loginPassword" type="password" placeholder="Password">
-
-    <button onclick="login()">Login</button>
-
-    <hr>
-
-    <h2>Create Teacher Account</h2>
-    <p class="muted">
-      Teachers must have an administrator-issued registration code.
-    </p>
-
-    <input id="signupName" placeholder="Full name">
-    <input id="signupEmail" type="email" placeholder="Email address">
-    <input id="signupPassword" type="password"
-      placeholder="Create password (at least 8 characters)">
-
-    <button onclick="signup()">Create Account</button>
-    <div id="loginMessage"></div>
-  </section>
-
-  <!-- TEACHER REGISTRATION -->
-  <section id="teacherRegistration" class="card hidden">
-    <h2>Complete Teacher Registration</h2>
-    <p>Enter your details and the code given by your administrator.</p>
-
-    <input id="teacherCode" placeholder="Teacher registration code">
-    <input id="firstName" placeholder="First name">
-    <input id="middleName" placeholder="Middle name (optional)">
-    <input id="lastName" placeholder="Last name">
-    <input id="phoneNumber" placeholder="Phone number">
-    <input id="specialization" placeholder="Subject specialization">
-
-    <button onclick="registerTeacher()">Complete Registration</button>
-    <div id="teacherMessage"></div>
-  </section>
-
-  <!-- ADMIN DASHBOARD -->
-  <section id="adminDashboard" class="hidden">
-    <div class="card">
-      <h2>Administrator Dashboard</h2>
-      <p id="adminWelcome"></p>
-      <p class="muted">Manage teacher registration and accounts.</p>
-      <button onclick="generateCode()">Generate Teacher Code</button>
-      <div id="codeResult"></div>
-      <p class="muted">
-        Codes expire after seven days. The original code is shown only once.
-        Copy it and give it securely to the intended teacher.
-      </p>
-      <p><a href="admin/dashboard.html">Open Full Admin Dashboard</a></p>
-    </div>
-
-    <div class="card">
-      <h2>Registered Teachers</h2>
-      <button class="secondary" onclick="loadTeachers()">Refresh Teacher List</button>
-      <div id="teacherList">Loading...</div>
-    </div>
-
-    <div class="card">
-      <button class="danger" onclick="logout()">Logout</button>
-    </div>
-  </section>
-
-  <!-- TEACHER DASHBOARD -->
-  <section id="teacherDashboard" class="hidden">
-    <div class="card">
-      <h2>Teacher Dashboard</h2>
-      <p id="teacherWelcome"></p>
-      <p>Your teacher account is registered.</p>
-      <p class="muted">Your assigned classes and student records are available through the teacher dashboard.</p>
-      <p><a href="teacher/dashboard.html">Open Teacher Dashboard</a></p>
-      <button class="danger" onclick="logout()">Logout</button>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <h3>Bulchana Student Management System</h3>
-  <p>A digital platform for efficient student information management, academic records and school administration.</p>
-  <p class="department">Prepared and Developed by the IT Department</p>
-  <p>Bulchana School | Information Technology Department</p>
-  <p class="copyright">© 2026 Bulchana School. All rights reserved.</p>
-</footer>
-
-<script>
-const SUPABASE_URL = "https://nsizlqqtufhuwnuyldny.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fraG6qtWDduBTeed-SxBZQ_rvKCKdCH";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-let currentUser = null;
-let currentProfile = null;
-
-function showMessage(elementId, message, type) {
-  document.getElementById(elementId).innerHTML =
-    '<div class="message ' + type + '">' + escapeHTML(message) + '</div>';
-}
-
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;",
-    '"': "&quot;", "'": "&#039;"
-  })[char]);
-}
-
-function hideAll() {
-  ["loginSection","teacherRegistration","adminDashboard","teacherDashboard"]
-    .forEach(id => document.getElementById(id).classList.add("hidden"));
-}
-
-async function login() {
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  if (!email || !password) {
-    showMessage("loginMessage","Enter your email and password.","error");
-    return;
-  }
-
-  const { error } = await db.auth.signInWithPassword({email,password});
-
-  if (error) {
-    showMessage("loginMessage",error.message,"error");
-    return;
-  }
-
-  await loadAccount();
-}
-
-async function signup() {
-  const fullName = document.getElementById("signupName").value.trim();
-  const email = document.getElementById("signupEmail").value.trim();
-  const password = document.getElementById("signupPassword").value;
-
-  if (!fullName || !email || password.length < 8) {
-    showMessage("loginMessage","Enter your full name, email and a password of at least 8 characters.","error");
-    return;
-  }
-
-  const { data, error } = await db.auth.signUp({email,password});
-
-  if (error) {
-    showMessage("loginMessage",error.message,"error");
-    return;
-  }
-
-  if (data.session) {
-    await loadAccount();
-  } else {
-    showMessage("loginMessage","Account created. Check your email to confirm it, then log in and complete teacher registration using your administrator's code.","success");
-  }
-}
-
-async function loadAccount() {
-  const { data: sessionData, error: sessionError } = await db.auth.getSession();
-
-  if (sessionError || !sessionData.session) {
-    hideAll();
-    document.getElementById("loginSection").classList.remove("hidden");
-    return;
-  }
-
-  currentUser = sessionData.session.user;
-
-  const { data: profile, error } = await db
-    .from("user_profiles")
-    .select("full_name, role, teacher_id, student_id")
-    .eq("user_id",currentUser.id)
-    .maybeSingle();
-
-  if (error) {
-    hideAll();
-    document.getElementById("loginSection").classList.remove("hidden");
-    showMessage("loginMessage",error.message,"error");
-    return;
-  }
-
-  currentProfile = profile;
-  hideAll();
-
-  if (!profile) {
-    document.getElementById("teacherRegistration").classList.remove("hidden");
-    return;
-  }
-
-  if (profile.role === "admin") {
-    document.getElementById("adminDashboard").classList.remove("hidden");
-    document.getElementById("adminWelcome").textContent =
-      "Welcome, " + profile.full_name;
-    await loadTeachers();
-    return;
-  }
-
-  if (profile.role === "teacher") {
-    if (!profile.teacher_id) {
-      showMessage("loginMessage","Your teacher profile is incomplete. Contact the administrator.","error");
-      document.getElementById("loginSection").classList.remove("hidden");
-      return;
-    }
-    document.getElementById("teacherDashboard").classList.remove("hidden");
-    document.getElementById("teacherWelcome").textContent =
-      "Welcome, " + profile.full_name;
-    return;
-  }
-
-  if (profile.role === "student") {
-    if (!profile.student_id) {
-      showMessage("loginMessage","Your student profile is incomplete. Contact the school administrator.","error");
-      document.getElementById("loginSection").classList.remove("hidden");
-      return;
-    }
-    window.location.href = "student/dashboard.html";
-    return;
-  }
-
-  document.getElementById("loginSection").classList.remove("hidden");
-  showMessage("loginMessage","Your account role is not recognized. Contact the administrator.","error");
-}
-
-async function generateCode() {
-  const result = document.getElementById("codeResult");
-  result.innerHTML = '<div class="message info">Generating code...</div>';
-
-  const { data, error } = await db.rpc("generate_teacher_code");
-
-  if (error) {
-    result.innerHTML = "";
-    showMessage("codeResult",error.message,"error");
-    return;
-  }
-
-  result.innerHTML =
-    '<p>Your new teacher registration code:</p>' +
-    '<div class="code" id="newTeacherCode">' + escapeHTML(data) + '</div>' +
-    '<button onclick="copyTeacherCode()">Copy Registration Code</button>' +
-    '<div class="message info">Save this code now. It cannot be retrieved from the database later.</div>';
-}
-
-async function copyTeacherCode() {
-  const code = document.getElementById("newTeacherCode").textContent;
-  try {
-    await navigator.clipboard.writeText(code);
-    alert("Teacher registration code copied!");
-  } catch (error) {
-    alert("Please select and copy the code manually: " + code);
-  }
-}
-
-async function registerTeacher() {
-  const code = document.getElementById("teacherCode").value.trim();
-  const first = document.getElementById("firstName").value.trim();
-  const middle = document.getElementById("middleName").value.trim();
-  const last = document.getElementById("lastName").value.trim();
-  const phone = document.getElementById("phoneNumber").value.trim();
-  const subject = document.getElementById("specialization").value.trim();
-
-  if (!code || !first || !last) {
-    showMessage("teacherMessage","Registration code, first name and last name are required.","error");
-    return;
-  }
-
-  const { error } = await db.rpc("register_teacher_with_code", {
-    p_code:code,
-    p_first_name:first,
-    p_middle_name:middle || null,
-    p_last_name:last,
-    p_phone_number:phone || null,
-    p_subject_specialization:subject || null
-  });
-
-  if (error) {
-    showMessage("teacherMessage",error.message,"error");
-    return;
-  }
-
-  showMessage("teacherMessage","Teacher registration completed successfully!","success");
-  await loadAccount();
-}
-
-async function loadTeachers() {
-  const list = document.getElementById("teacherList");
-  list.textContent = "Loading teachers...";
-
-  const { data, error } = await db
-    .from("teachers")
-    .select("id, teacher_number, first_name, middle_name, last_name, email, subject_specialization, teacher_status")
-    .order("id",{ascending:false});
-
-  if (error) {
-    list.textContent = "Could not load teachers: " + error.message;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    list.textContent = "No registered teachers yet.";
-    return;
-  }
-
-  list.innerHTML = data.map(teacher => {
-    const name = [teacher.first_name,teacher.middle_name,teacher.last_name]
-      .filter(Boolean).join(" ");
-
-    return `
-      <div class="teacher">
-        <strong>${escapeHTML(name)}</strong>
-        <div class="muted">${escapeHTML(teacher.teacher_number || "")} · ${escapeHTML(teacher.email || "")}</div>
-        <div class="muted">Subject: ${escapeHTML(teacher.subject_specialization || "Not specified")}</div>
-      </div>`;
-  }).join("");
-}
-
-async function logout() {
-  await db.auth.signOut();
-  currentUser = null;
-  currentProfile = null;
-  hideAll();
-  document.getElementById("loginSection").classList.remove("hidden");
-}
-
-(async function startApp() {
-  await loadAccount();
-})();
-</script>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navigation = document.getElementById("navigation");
+
+    menuToggle.addEventListener("click", function () {
+      navigation.classList.toggle("show");
+    });
+
+    navigation.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        navigation.classList.remove("show");
+      });
+    });
+  </script>
 
 </body>
 </html>
