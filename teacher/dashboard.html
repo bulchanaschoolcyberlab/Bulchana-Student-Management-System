@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard | Bulchana SMS</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+  <script src="../js/auth.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      color: #172033;
+    }
+    header {
+      background: #123b70;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    header h2 { margin: 0; }
+    button {
+      border: 0;
+      border-radius: 7px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .logout { background: white; color: #123b70; }
+    main { max-width: 1000px; margin: 25px auto; padding: 0 16px; }
+    .welcome, .panel, .class-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 9px #0000000c;
+    }
+    .welcome h1 { margin-top: 0; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+    }
+    .stat {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 9px #0000000c;
+    }
+    .stat strong {
+      display: block;
+      font-size: 28px;
+      color: #123b70;
+      margin-top: 8px;
+    }
+    .class-card h3 { margin-top: 0; color: #123b70; }
+    .muted { color: #64748b; }
+    .message { padding: 12px; border-radius: 8px; background: #eff6ff; }
+    .error { background: #fee2e2; color: #991b1b; }
+    footer { text-align: center; color: #64748b; padding: 25px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>Bulchana SMS — Teacher</h2>
+  <button class="logout" onclick="logout()">Log out</button>
+</header>
+
+<main>
+  <section class="welcome">
+    <h1>Teacher Dashboard</h1>
+    <p id="teacherName" class="muted">Loading your account...</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      Assigned Classes
+      <strong id="classCount">—</strong>
+    </div>
+    <div class="stat">
+      Students in Your Classes
+      <strong id="studentCount">—</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>My Assigned Classes</h2>
+    <div id="classList" class="message">Loading assigned classes...</div>
+  </section>
+
+  <section class="panel">
+    <h2>Teacher Tools</h2>
+    <p class="muted">
+      Your class management, student records, attendance and marks tools
+      will be added here as we build and test each feature.
+    </p>
+  </section>
+</main>
+
+<footer>
+  Bulchana Student Management System · IT Department
+</footer>
+
+<script>
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+async function startTeacherDashboard() {
+  const classList = document.getElementById("classList");
+
+  try {
+    const profile = await requireLogin();
+    if (!profile) return;
+
+    if (profile.role !== "teacher" || !profile.teacher_id) {
+      classList.textContent = "This page is only for approved teacher accounts.";
+      classList.classList.add("error");
+      return;
+    }
+
+    const { data: teacher, error: teacherError } = await supabaseClient
+      .from("teachers")
+      .select("first_name, middle_name, last_name")
+      .eq("id", profile.teacher_id)
+      .maybeSingle();
+
+    if (teacherError) throw teacherError;
+
+    const fullName = teacher
+      ? [teacher.first_name, teacher.middle_name, teacher.last_name]
+          .filter(Boolean).join(" ")
+      : profile.full_name || "Teacher";
+
+    document.getElementById("teacherName").textContent =
+      "Welcome, " + fullName;
+
+    const { data: assignments, error: assignmentError } =
+      await supabaseClient
+        .from("teacher_class_subjects")
+        .select("class_id, subject_id, academic_year_id")
+        .eq("teacher_id", profile.teacher_id);
+
+    if (assignmentError) throw assignmentError;
+
+    const classIds = [...new Set(
+      (assignments || []).map(item => item.class_id).filter(Boolean)
+    )];
+
+    document.getElementById("classCount").textContent = classIds.length;
+
+    if (classIds.length === 0) {
+      document.getElementById("studentCount").textContent = "0";
+      classList.textContent =
+        "No classes have been assigned to your account yet. Contact the administrator.";
+      return;
+    }
+
+    const { data: classes, error: classesError } = await supabaseClient
+      .from("classes")
+      .select("id, class_name, grade_level, section, academic_year")
+      .in("id", classIds);
+
+    if (classesError) throw classesError;
+
+    const { data: students, error: studentsError } = await supabaseClient
+      .from("students")
+      .select("id, class_id")
+      .in("class_id", classIds);
+
+    if (studentsError) throw studentsError;
+
+    document.getElementById("studentCount").textContent =
+      (students || []).length;
+
+    if (!classes || classes.length === 0) {
+      classList.textContent =
+        "Your assignments were found, but the class details could not be displayed.";
+      return;
+    }
+
+    classList.className = "";
+
+    classList.innerHTML = classes.map(item => {
+      const count = (students || []).filter(
+        student => String(student.class_id) === String(item.id)
+      ).length;
+
+      const subjectIds = [...new Set(
+        (assignments || [])
+          .filter(a => String(a.class_id) === String(item.id))
+          .map(a => a.subject_id)
+          .filter(Boolean)
+      )];
+
+      return `
+        <div class="class-card">
+          <h3>${escapeHTML(item.class_name || "Class")}</h3>
+          <p>Grade: ${escapeHTML(item.grade_level || "Not specified")}</p>
+          <p>Section: ${escapeHTML(item.section || "Not specified")}</p>
+          <p>Academic year: ${escapeHTML(item.academic_year || "Not specified")}</p>
+          <p>Students: ${count}</p>
+          <p>Assigned subject records: ${subjectIds.length}</p>
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.error(error);
+    classList.textContent = "Could not load your dashboard: " + error.message;
+    classList.classList.add("error");
+  }
+}
+
+startTeacherDashboard();
+</script>
+
+</body>
+</html>
