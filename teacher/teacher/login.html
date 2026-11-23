@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Login | Bulchana School</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      min-height: 100vh;
+      background: #f3f6fb;
+      display: flex;
+      flex-direction: column;
+    }
+    .login-wrap {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 45px 18px;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: white;
+      padding: 38px;
+      border-radius: 16px;
+      box-shadow: 0 18px 55px rgba(16,39,71,.09);
+      border: 1px solid #e8edf4;
+    }
+    .login-logo {
+      width: 58px;
+      height: 58px;
+      background: #102747;
+      color: #e5ad42;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+      font-weight: 800;
+      margin-bottom: 25px;
+    }
+    .login-card h1 {
+      color: #102747;
+      font-family: Manrope, sans-serif;
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+    .login-card .subtitle {
+      color: #718096;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+    .login-card label {
+      display: block;
+      color: #25364b;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 17px 0 7px;
+    }
+    .login-card input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #dce3ed;
+      border-radius: 8px;
+      font: inherit;
+      outline: none;
+    }
+    .login-card input:focus {
+      border-color: #1765c1;
+      box-shadow: 0 0 0 3px rgba(23,101,193,.1);
+    }
+    .login-button {
+      width: 100%;
+      border: 0;
+      background: #1765c1;
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 25px;
+      cursor: pointer;
+    }
+    .login-button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+    .message {
+      display: none;
+      margin-top: 17px;
+      padding: 12px;
+      border-radius: 7px;
+      font-size: 13px;
+    }
+    .message.error {
+      display: block;
+      background: #fff0f0;
+      color: #b42318;
+    }
+    .message.success {
+      display: block;
+      background: #eaf8ef;
+      color: #187443;
+    }
+    .login-links {
+      text-align: center;
+      margin-top: 23px;
+      color: #718096;
+      font-size: 13px;
+    }
+    .login-links a {
+      color: #1765c1;
+      font-weight: 700;
+    }
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #718096;
+      font-size: 13px;
+    }
+    @media(max-width:480px) {
+      .login-card { padding: 27px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav-container">
+    <a href="../index.html" class="brand">
+      <div class="brand-logo">B</div>
+      <div class="brand-text">
+        <strong>BULCHANA SCHOOL</strong>
+        <span>Student Management System</span>
+      </div>
+    </a>
+  </div>
+</header>
+
+<main class="login-wrap">
+  <section class="login-card">
+    <div class="login-logo">B</div>
+    <p class="eyebrow">TEACHER PORTAL</p>
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to access your teacher account.</p>
+
+    <form id="loginForm">
+      <label for="email">Email address</label>
+      <input type="email" id="email"
+        placeholder="Enter your email"
+        autocomplete="email" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password"
+        placeholder="Enter your password"
+        autocomplete="current-password" required>
+
+      <button class="login-button" id="loginButton" type="submit">
+        Sign in to Teacher Portal
+      </button>
+
+      <div id="message" class="message" role="status"></div>
+    </form>
+
+    <div class="login-links">
+      Teacher accounts are created using a school-issued registration code.
+    </div>
+
+    <a href="../index.html" class="back-home">← Back to school website</a>
+  </section>
+</main>
+
+<script src="../js/supabase.js"></script>
+<script>
+  const form = document.getElementById("loginForm");
+  const button = document.getElementById("loginButton");
+  const message = document.getElementById("message");
+
+  function showMessage(text, type) {
+    message.textContent = text;
+    message.className = "message " + type;
+  }
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    button.disabled = true;
+    button.textContent = "Signing in...";
+    message.className = "message";
+
+    try {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      const { data: profile, error: profileError } = await supabaseClient
+        .from("user_profiles")
+        .select("role")
+        .eq("id", data.user.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      if (profile.role !== "teacher") {
+        await supabaseClient.auth.signOut();
+        throw new Error("This account is not registered as a teacher account.");
+      }
+
+      showMessage("Login successful. Opening your dashboard...", "success");
+
+      window.location.href = "dashboard.html";
+
+    } catch (error) {
+      showMessage(error.message || "Unable to sign in. Please try again.", "error");
+      button.disabled = false;
+      button.textContent = "Sign in to Teacher Portal";
+    }
+  });
+</script>
+
+</body>
+</html>
