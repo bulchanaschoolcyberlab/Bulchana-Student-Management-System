@@ -2,151 +2,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Bulchana Student Management System - A digital platform for student information, academic records and school administration.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bulchana Student Management System">
+<title>Bulchana Student Management System</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <title>Bulchana Student Management System</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #172033;
-    }
-
-    header {
-      background: #102b52;
-      color: white;
-      padding: 28px 18px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0 0 10px;
-    }
-
-    header p {
-      margin: 0;
-      color: #cbd5e1;
-    }
-
-    main {
-      width: min(920px, 94%);
-      margin: 30px auto;
-      min-height: 55vh;
-    }
-
-    .card {
-      background: white;
-      padding: 24px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-      box-shadow: 0 3px 15px #0000000c;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #15345e;
-    }
-
-    input, button {
-      width: 100%;
-      padding: 13px;
-      margin: 7px 0;
-      border-radius: 8px;
-      font-size: 15px;
-    }
-
-    input {
-      border: 1px solid #cbd5e1;
-      background: white;
-    }
-
-    button {
-      border: none;
-      background: #1763c6;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover { background: #104d9c; }
-    button.secondary { background: #475569; }
-    button.danger { background: #b42318; }
-
-    .hidden { display: none !important; }
-
-    .message {
-      padding: 12px;
-      border-radius: 8px;
-      margin: 12px 0;
-      overflow-wrap: anywhere;
-    }
-
-    .success { background: #dcfce7; color: #166534; }
-    .error { background: #fee2e2; color: #991b1b; }
-    .info { background: #dbeafe; color: #1e40af; }
-
-    .code {
-      font-size: 23px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      overflow-wrap: anywhere;
-      color: #14532d;
-      text-align: center;
-      padding: 15px;
-      background: #dcfce7;
-      border-radius: 8px;
-    }
-
-    .teacher {
-      padding: 12px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .muted {
-      color: #64748b;
-      font-size: 14px;
-    }
-
-    footer {
-      background: #102b52;
-      color: white;
-      text-align: center;
-      padding: 30px 18px;
-      margin-top: 40px;
-    }
-
-    footer h3 {
-      margin: 0 0 10px;
-      font-size: 18px;
-    }
-
-    footer p {
-      margin: 7px 0;
-      color: #cbd5e1;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    footer .department {
-      color: white;
-      font-weight: bold;
-      margin-top: 18px;
-    }
-
-    footer .copyright {
-      margin-top: 15px;
-      font-size: 12px;
-      color: #94a3b8;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#172033}
+header{background:#102b52;color:white;padding:35px 18px;text-align:center}
+header h1{margin:0 0 10px}
+header p{margin:0;color:#cbd5e1}
+main{width:min(1000px,94%);margin:30px auto;min-height:55vh}
+.card{background:white;padding:24px;border-radius:14px;margin-bottom:20px;box-shadow:0 3px 15px #0000000c}
+h2{margin-top:0;color:#15345e}
+input,button{width:100%;padding:13px;margin:7px 0;border-radius:8px;font-size:15px}
+input{border:1px solid #cbd5e1;background:white}
+button{border:none;background:#1763c6;color:white;font-weight:bold;cursor:pointer}
+button:hover{background:#104d9c}
+button.secondary{background:#475569}
+button.danger{background:#b42318}
+.hidden{display:none!important}
+.message{padding:12px;border-radius:8px;margin:12px 0;overflow-wrap:anywhere}
+.success{background:#dcfce7;color:#166534}
+.error{background:#fee2e2;color:#991b1b}
+.info{background:#dbeafe;color:#1e40af}
+.code{font-size:23px;font-weight:bold;letter-spacing:2px;overflow-wrap:anywhere;color:#14532d;text-align:center;padding:15px;background:#dcfce7;border-radius:8px}
+.teacher{padding:12px;border-bottom:1px solid #e2e8f0}
+.muted{color:#64748b;font-size:14px}
+.portal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:22px}
+.portal{background:white;padding:22px;border-radius:12px;box-shadow:0 3px 15px #0000000c}
+.portal h3{color:#15345e;margin-top:0}
+.portal p{color:#64748b;line-height:1.5}
+.portal a{display:block;text-align:center;text-decoration:none;background:#1763c6;color:white;padding:12px;border-radius:8px;font-weight:bold;margin-top:12px}
+.portal a.secondary{background:#475569}
+footer{background:#102b52;color:white;text-align:center;padding:30px 18px;margin-top:40px}
+footer h3{margin:0 0 10px;font-size:18px}
+footer p{margin:7px 0;color:#cbd5e1;font-size:14px;line-height:1.6}
+footer .department{color:white;font-weight:bold;margin-top:18px}
+footer .copyright{margin-top:15px;font-size:12px;color:#94a3b8}
+</style>
 </head>
 
 <body>
@@ -154,9 +50,39 @@
 <header>
   <h1>Bulchana Student Management System</h1>
   <p>Smart School Administration & Academic Management</p>
+  <p style="margin-top:10px">Empowering Students Through Technology</p>
 </header>
 
 <main>
+
+  <!-- PORTAL NAVIGATION -->
+  <section class="portal-grid">
+
+    <div class="portal">
+      <h3>Student Registration</h3>
+      <p>Register as a new student using your school records and complete the registration process.</p>
+      <a href="student/register.html">Register as Student</a>
+    </div>
+
+    <div class="portal">
+      <h3>Student Login</h3>
+      <p>Already registered? Sign in to access your student dashboard, results and payment information.</p>
+      <a href="#loginSection">Student Login</a>
+    </div>
+
+    <div class="portal">
+      <h3>Teacher Portal</h3>
+      <p>Access your teacher account and manage your academic responsibilities.</p>
+      <a href="#loginSection" class="secondary">Teacher Login</a>
+    </div>
+
+    <div class="portal">
+      <h3>Administration</h3>
+      <p>Authorized administrators can manage teachers and school accounts.</p>
+      <a href="#loginSection" class="secondary">Admin Login</a>
+    </div>
+
+  </section>
 
   <!-- LOGIN -->
   <section id="loginSection" class="card">
@@ -181,14 +107,13 @@
       placeholder="Create password (at least 8 characters)">
 
     <button onclick="signup()">Create Account</button>
-
     <div id="loginMessage"></div>
   </section>
 
   <!-- TEACHER REGISTRATION -->
   <section id="teacherRegistration" class="card hidden">
     <h2>Complete Teacher Registration</h2>
-    <p>Your account is created. Enter your details and the code given by your administrator.</p>
+    <p>Enter your details and the code given by your administrator.</p>
 
     <input id="teacherCode" placeholder="Teacher registration code">
     <input id="firstName" placeholder="First name">
@@ -203,7 +128,6 @@
 
   <!-- ADMIN DASHBOARD -->
   <section id="adminDashboard" class="hidden">
-
     <div class="card">
       <h2>Administrator Dashboard</h2>
       <p id="adminWelcome"></p>
@@ -214,6 +138,7 @@
         Codes expire after seven days. The original code is shown only once.
         Copy it and give it securely to the intended teacher.
       </p>
+      <p><a href="admin/dashboard.html">Open Full Admin Dashboard</a></p>
     </div>
 
     <div class="card">
@@ -225,7 +150,6 @@
     <div class="card">
       <button class="danger" onclick="logout()">Logout</button>
     </div>
-
   </section>
 
   <!-- TEACHER DASHBOARD -->
@@ -234,320 +158,263 @@
       <h2>Teacher Dashboard</h2>
       <p id="teacherWelcome"></p>
       <p>Your teacher account is registered.</p>
-      <p class="muted">
-        Your assigned classes and student records will appear here
-        as those features are connected.
-      </p>
+      <p class="muted">Your assigned classes and student records are available through the teacher dashboard.</p>
+      <p><a href="teacher/dashboard.html">Open Teacher Dashboard</a></p>
       <button class="danger" onclick="logout()">Logout</button>
     </div>
   </section>
 
 </main>
 
-<!-- PROFESSIONAL SCHOOL FOOTER -->
 <footer>
   <h3>Bulchana Student Management System</h3>
-
-  <p>
-    A digital platform for efficient student information management,
-    academic records and school administration.
-  </p>
-
-  <p class="department">
-    Prepared and Developed by the IT Department
-  </p>
-
+  <p>A digital platform for efficient student information management, academic records and school administration.</p>
+  <p class="department">Prepared and Developed by the IT Department</p>
   <p>Bulchana School | Information Technology Department</p>
-
-  <p class="copyright">
-    © 2026 Bulchana School. All rights reserved.
-  </p>
+  <p class="copyright">© 2026 Bulchana School. All rights reserved.</p>
 </footer>
 
 <script>
-  // SUPABASE CONNECTION
-  const SUPABASE_URL =
-    "https://nsizlqqtufhuwnuyldny.supabase.co";
+const SUPABASE_URL = "https://nsizlqqtufhuwnuyldny.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_fraG6qtWDduBTeed-SxBZQ_rvKCKdCH";
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_fraG6qtWDduBTeed-SxBZQ_rvKCKdCH";
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+let currentUser = null;
+let currentProfile = null;
 
-  let currentUser = null;
-  let currentProfile = null;
+function showMessage(elementId, message, type) {
+  document.getElementById(elementId).innerHTML =
+    '<div class="message ' + type + '">' + escapeHTML(message) + '</div>';
+}
 
-  function showMessage(elementId, message, type) {
-    document.getElementById(elementId).innerHTML =
-      '<div class="message ' + type + '">' +
-      escapeHTML(message) +
-      '</div>';
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#039;"
+  })[char]);
+}
+
+function hideAll() {
+  ["loginSection","teacherRegistration","adminDashboard","teacherDashboard"]
+    .forEach(id => document.getElementById(id).classList.add("hidden"));
+}
+
+async function login() {
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  if (!email || !password) {
+    showMessage("loginMessage","Enter your email and password.","error");
+    return;
   }
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function(char) {
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[char];
-    });
+  const { error } = await db.auth.signInWithPassword({email,password});
+
+  if (error) {
+    showMessage("loginMessage",error.message,"error");
+    return;
   }
 
-  function hideAll() {
-    [
-      "loginSection",
-      "teacherRegistration",
-      "adminDashboard",
-      "teacherDashboard"
-    ].forEach(id => {
-      document.getElementById(id).classList.add("hidden");
-    });
+  await loadAccount();
+}
+
+async function signup() {
+  const fullName = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+
+  if (!fullName || !email || password.length < 8) {
+    showMessage("loginMessage","Enter your full name, email and a password of at least 8 characters.","error");
+    return;
   }
 
-  async function login() {
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
+  const { data, error } = await db.auth.signUp({email,password});
 
-    if (!email || !password) {
-      showMessage("loginMessage", "Enter your email and password.", "error");
-      return;
-    }
+  if (error) {
+    showMessage("loginMessage",error.message,"error");
+    return;
+  }
 
-    const { error } = await db.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) {
-      showMessage("loginMessage", error.message, "error");
-      return;
-    }
-
+  if (data.session) {
     await loadAccount();
+  } else {
+    showMessage("loginMessage","Account created. Check your email to confirm it, then log in and complete teacher registration using your administrator's code.","success");
+  }
+}
+
+async function loadAccount() {
+  const { data: sessionData, error: sessionError } = await db.auth.getSession();
+
+  if (sessionError || !sessionData.session) {
+    hideAll();
+    document.getElementById("loginSection").classList.remove("hidden");
+    return;
   }
 
-  async function signup() {
-    const fullName = document.getElementById("signupName").value.trim();
-    const email = document.getElementById("signupEmail").value.trim();
-    const password = document.getElementById("signupPassword").value;
+  currentUser = sessionData.session.user;
 
-    if (!fullName || !email || password.length < 8) {
-      showMessage(
-        "loginMessage",
-        "Enter your full name, email and a password of at least 8 characters.",
-        "error"
-      );
-      return;
-    }
+  const { data: profile, error } = await db
+    .from("user_profiles")
+    .select("full_name, role, teacher_id, student_id")
+    .eq("user_id",currentUser.id)
+    .maybeSingle();
 
-    const { data, error } = await db.auth.signUp({
-      email,
-      password
-    });
-
-    if (error) {
-      showMessage("loginMessage", error.message, "error");
-      return;
-    }
-
-    if (data.session) {
-      await loadAccount();
-    } else {
-      showMessage(
-        "loginMessage",
-        "Account created. Check your email to confirm it, then log in and complete teacher registration using your administrator's code.",
-        "success"
-      );
-    }
+  if (error) {
+    hideAll();
+    document.getElementById("loginSection").classList.remove("hidden");
+    showMessage("loginMessage",error.message,"error");
+    return;
   }
 
-  async function loadAccount() {
-    const { data: sessionData, error: sessionError } =
-      await db.auth.getSession();
+  currentProfile = profile;
+  hideAll();
 
-    if (sessionError || !sessionData.session) {
-      hideAll();
+  if (!profile) {
+    document.getElementById("teacherRegistration").classList.remove("hidden");
+    return;
+  }
+
+  if (profile.role === "admin") {
+    document.getElementById("adminDashboard").classList.remove("hidden");
+    document.getElementById("adminWelcome").textContent =
+      "Welcome, " + profile.full_name;
+    await loadTeachers();
+    return;
+  }
+
+  if (profile.role === "teacher") {
+    if (!profile.teacher_id) {
+      showMessage("loginMessage","Your teacher profile is incomplete. Contact the administrator.","error");
       document.getElementById("loginSection").classList.remove("hidden");
       return;
     }
-
-    currentUser = sessionData.session.user;
-
-    const { data: profile, error } = await db
-      .from("user_profiles")
-      .select("full_name, role, teacher_id, student_id")
-      .eq("user_id", currentUser.id)
-      .maybeSingle();
-
-    if (error) {
-      showMessage("loginMessage", error.message, "error");
-      return;
-    }
-
-    currentProfile = profile;
-    hideAll();
-
-    if (!profile) {
-      document.getElementById("teacherRegistration")
-        .classList.remove("hidden");
-      return;
-    }
-
-    if (profile.role === "admin") {
-      document.getElementById("adminDashboard").classList.remove("hidden");
-      document.getElementById("adminWelcome").textContent =
-        "Welcome, " + profile.full_name;
-      await loadTeachers();
-      return;
-    }
-
-    if (profile.role === "teacher") {
-      document.getElementById("teacherDashboard").classList.remove("hidden");
-      document.getElementById("teacherWelcome").textContent =
-        "Welcome, " + profile.full_name;
-      return;
-    }
-
-    hideAll();
-    document.getElementById("loginSection").classList.remove("hidden");
-    showMessage(
-      "loginMessage",
-      "Your account does not have access to this version of the website.",
-      "error"
-    );
+    document.getElementById("teacherDashboard").classList.remove("hidden");
+    document.getElementById("teacherWelcome").textContent =
+      "Welcome, " + profile.full_name;
+    return;
   }
 
-  async function generateCode() {
-    const result = document.getElementById("codeResult");
-    result.innerHTML = '<div class="message info">Generating code...</div>';
-
-    const { data, error } = await db.rpc("generate_teacher_code");
-
-    if (error) {
-      result.innerHTML = "";
-      showMessage("codeResult", error.message, "error");
+  if (profile.role === "student") {
+    if (!profile.student_id) {
+      showMessage("loginMessage","Your student profile is incomplete. Contact the school administrator.","error");
+      document.getElementById("loginSection").classList.remove("hidden");
       return;
     }
-
-    result.innerHTML =
-      '<p>Your new teacher registration code:</p>' +
-      '<div class="code" id="newTeacherCode">' +
-      escapeHTML(data) +
-      '</div>' +
-      '<button onclick="copyTeacherCode()">Copy Registration Code</button>' +
-      '<div class="message info">Save this code now. It cannot be retrieved from the database later.</div>';
+    window.location.href = "student/dashboard.html";
+    return;
   }
 
-  async function copyTeacherCode() {
-    const code = document.getElementById("newTeacherCode").textContent;
+  document.getElementById("loginSection").classList.remove("hidden");
+  showMessage("loginMessage","Your account role is not recognized. Contact the administrator.","error");
+}
 
-    try {
-      await navigator.clipboard.writeText(code);
-      alert("Teacher registration code copied!");
-    } catch (error) {
-      alert("Please select and copy the code manually: " + code);
-    }
+async function generateCode() {
+  const result = document.getElementById("codeResult");
+  result.innerHTML = '<div class="message info">Generating code...</div>';
+
+  const { data, error } = await db.rpc("generate_teacher_code");
+
+  if (error) {
+    result.innerHTML = "";
+    showMessage("codeResult",error.message,"error");
+    return;
   }
 
-  async function registerTeacher() {
-    const code = document.getElementById("teacherCode").value.trim();
-    const first = document.getElementById("firstName").value.trim();
-    const middle = document.getElementById("middleName").value.trim();
-    const last = document.getElementById("lastName").value.trim();
-    const phone = document.getElementById("phoneNumber").value.trim();
-    const subject = document.getElementById("specialization").value.trim();
+  result.innerHTML =
+    '<p>Your new teacher registration code:</p>' +
+    '<div class="code" id="newTeacherCode">' + escapeHTML(data) + '</div>' +
+    '<button onclick="copyTeacherCode()">Copy Registration Code</button>' +
+    '<div class="message info">Save this code now. It cannot be retrieved from the database later.</div>';
+}
 
-    if (!code || !first || !last) {
-      showMessage(
-        "teacherMessage",
-        "Registration code, first name and last name are required.",
-        "error"
-      );
-      return;
-    }
+async function copyTeacherCode() {
+  const code = document.getElementById("newTeacherCode").textContent;
+  try {
+    await navigator.clipboard.writeText(code);
+    alert("Teacher registration code copied!");
+  } catch (error) {
+    alert("Please select and copy the code manually: " + code);
+  }
+}
 
-    const { error } = await db.rpc("register_teacher_with_code", {
-      p_code: code,
-      p_first_name: first,
-      p_middle_name: middle || null,
-      p_last_name: last,
-      p_phone_number: phone || null,
-      p_subject_specialization: subject || null
-    });
+async function registerTeacher() {
+  const code = document.getElementById("teacherCode").value.trim();
+  const first = document.getElementById("firstName").value.trim();
+  const middle = document.getElementById("middleName").value.trim();
+  const last = document.getElementById("lastName").value.trim();
+  const phone = document.getElementById("phoneNumber").value.trim();
+  const subject = document.getElementById("specialization").value.trim();
 
-    if (error) {
-      showMessage("teacherMessage", error.message, "error");
-      return;
-    }
-
-    showMessage(
-      "teacherMessage",
-      "Teacher registration completed successfully!",
-      "success"
-    );
-
-    await loadAccount();
+  if (!code || !first || !last) {
+    showMessage("teacherMessage","Registration code, first name and last name are required.","error");
+    return;
   }
 
-  async function loadTeachers() {
-    const list = document.getElementById("teacherList");
-    list.textContent = "Loading teachers...";
+  const { error } = await db.rpc("register_teacher_with_code", {
+    p_code:code,
+    p_first_name:first,
+    p_middle_name:middle || null,
+    p_last_name:last,
+    p_phone_number:phone || null,
+    p_subject_specialization:subject || null
+  });
 
-    const { data, error } = await db
-      .from("teachers")
-      .select("id, teacher_number, first_name, middle_name, last_name, email, subject_specialization, teacher_status")
-      .order("id", { ascending: false });
-
-    if (error) {
-      list.textContent = "Could not load teachers: " + error.message;
-      return;
-    }
-
-    if (!data || data.length === 0) {
-      list.textContent = "No registered teachers yet.";
-      return;
-    }
-
-    list.innerHTML = data.map(teacher => {
-      const name = [
-        teacher.first_name,
-        teacher.middle_name,
-        teacher.last_name
-      ].filter(Boolean).join(" ");
-
-      return `
-        <div class="teacher">
-          <strong>${escapeHTML(name)}</strong>
-          <div class="muted">
-            ${escapeHTML(teacher.teacher_number || "")}
-            · ${escapeHTML(teacher.email || "")}
-          </div>
-          <div class="muted">
-            Subject: ${escapeHTML(teacher.subject_specialization || "Not specified")}
-          </div>
-        </div>
-      `;
-    }).join("");
+  if (error) {
+    showMessage("teacherMessage",error.message,"error");
+    return;
   }
 
-  async function logout() {
-    await db.auth.signOut();
-    currentUser = null;
-    currentProfile = null;
-    hideAll();
-    document.getElementById("loginSection").classList.remove("hidden");
+  showMessage("teacherMessage","Teacher registration completed successfully!","success");
+  await loadAccount();
+}
+
+async function loadTeachers() {
+  const list = document.getElementById("teacherList");
+  list.textContent = "Loading teachers...";
+
+  const { data, error } = await db
+    .from("teachers")
+    .select("id, teacher_number, first_name, middle_name, last_name, email, subject_specialization, teacher_status")
+    .order("id",{ascending:false});
+
+  if (error) {
+    list.textContent = "Could not load teachers: " + error.message;
+    return;
   }
 
-  // CHECK EXISTING LOGIN SESSION
-  (async function startApp() {
-    await loadAccount();
-  })();
+  if (!data || data.length === 0) {
+    list.textContent = "No registered teachers yet.";
+    return;
+  }
+
+  list.innerHTML = data.map(teacher => {
+    const name = [teacher.first_name,teacher.middle_name,teacher.last_name]
+      .filter(Boolean).join(" ");
+
+    return `
+      <div class="teacher">
+        <strong>${escapeHTML(name)}</strong>
+        <div class="muted">${escapeHTML(teacher.teacher_number || "")} · ${escapeHTML(teacher.email || "")}</div>
+        <div class="muted">Subject: ${escapeHTML(teacher.subject_specialization || "Not specified")}</div>
+      </div>`;
+  }).join("");
+}
+
+async function logout() {
+  await db.auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  hideAll();
+  document.getElementById("loginSection").classList.remove("hidden");
+}
+
+(async function startApp() {
+  await loadAccount();
+})();
 </script>
 
 </body>
