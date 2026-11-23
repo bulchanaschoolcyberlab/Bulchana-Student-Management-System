@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Bulchana School</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav-container">
+    <a href="index.html" class="brand">
+      <div class="brand-logo">B</div>
+      <div class="brand-text">
+        <strong>BULCHANA SCHOOL</strong>
+        <span>Student Management System</span>
+      </div>
+    </a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="index.html#portals">Portals</a>
+      <a href="contact.html" class="active">Contact</a>
+      <a href="student/login.html" class="nav-login">Sign In</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">WE ARE HERE TO HELP</span>
+      <h1>Contact Bulchana School</h1>
+      <p>Get in touch with our school administration.</p>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="container contact-layout">
+
+      <div class="contact-information">
+        <span class="section-label">CONTACT INFORMATION</span>
+        <h2>Let's connect.</h2>
+        <p>
+          For questions about student registration, academic
+          information or the digital platform, please contact
+          the school administration.
+        </p>
+
+        <div class="contact-item">
+          <div class="contact-symbol">🏫</div>
+          <div>
+            <strong>School</strong>
+            <span>Bulchana School</span>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-symbol">📍</div>
+          <div>
+            <strong>Location</strong>
+            <span>Shashemene, Ethiopia</span>
+          </div>
+        </div>
+
+        <div class="contact-item">
+          <div class="contact-symbol">💻</div>
+          <div>
+            <strong>IT Department</strong>
+            <span>Technology | Innovation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-panel">
+        <h3>School Administration</h3>
+        <p>
+          Please use the school's official communication channels
+          for enquiries and support.
+        </p>
+        <div class="contact-divider"></div>
+        <p class="contact-note">
+          This page does not yet send messages. Official phone
+          numbers and email addresses can be added when provided
+          by the school.
+        </p>
+        <a href="index.html" class="btn btn-primary contact-home">
+          Return to Homepage →
+        </a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-brand">
+      <strong>BULCHANA SCHOOL</strong>
+      <p>Empowering Students Through Technology.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span class="year"></span> Bulchana School. All rights reserved.</p>
+      <p>IT Department | Technology | Innovation</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector(".year").textContent = new Date().getFullYear();
+  document.getElementById("menuToggle").addEventListener("click", function() {
+    document.getElementById("navigation").classList.toggle("show");
+  });
+</script>
+</body>
+</html>
