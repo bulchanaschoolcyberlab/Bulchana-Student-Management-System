@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Bulchana School</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="container nav-container">
+    <a href="index.html" class="brand">
+      <div class="brand-logo">B</div>
+      <div class="brand-text">
+        <strong>BULCHANA SCHOOL</strong>
+        <span>Student Management System</span>
+      </div>
+    </a>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav class="nav" id="navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="index.html#portals">Portals</a>
+      <a href="contact.html">Contact</a>
+      <a href="student/login.html" class="nav-login">Sign In</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <span class="section-label">GET TO KNOW US</span>
+      <h1>About Bulchana School</h1>
+      <p>Education, opportunity and a commitment to a better future.</p>
+    </div>
+  </section>
+
+  <section class="about-content">
+    <div class="container about-layout">
+      <div>
+        <span class="section-label">WHO WE ARE</span>
+        <h2>Education that empowers the next generation.</h2>
+        <p>
+          Bulchana School is committed to supporting students
+          through education, learning opportunities and academic
+          development.
+        </p>
+        <p>
+          Our digital Student Management System is designed to
+          connect students, teachers and school administrators
+          through a more organized and accessible platform.
+        </p>
+      </div>
+
+      <div class="about-highlight">
+        <div class="about-mark">B</div>
+        <h3>Bulchana School</h3>
+        <p>Empowering Students Through Technology.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-values">
+    <div class="container">
+      <div class="section-heading">
+        <span class="section-label">WHAT GUIDES US</span>
+        <h2>Our Core Values</h2>
+        <p>The principles behind our educational vision.</p>
+      </div>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <div class="feature-icon">📖</div>
+          <h3>Learning</h3>
+          <p>Encouraging knowledge, curiosity and continuous improvement.</p>
+        </article>
+
+        <article class="feature">
+          <div class="feature-icon">🤝</div>
+          <h3>Responsibility</h3>
+          <p>Promoting respect, accountability and cooperation.</p>
+        </article>
+
+        <article class="feature">
+          <div class="feature-icon">💡</div>
+          <h3>Innovation</h3>
+          <p>Using technology to support better educational experiences.</p>
+        </article>
+
+        <article class="feature">
+          <div class="feature-icon">🌱</div>
+          <h3>Growth</h3>
+          <p>Helping students develop their knowledge and potential.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container cta-content">
+      <div>
+        <span class="section-label">OUR DIGITAL PLATFORM</span>
+        <h2>Be part of our learning community.</h2>
+        <p>Access the Bulchana School digital portals.</p>
+      </div>
+      <a href="index.html#portals" class="btn btn-light">Explore Portals →</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-content">
+    <div class="footer-brand">
+      <strong>BULCHANA SCHOOL</strong>
+      <p>Empowering Students Through Technology.</p>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span class="year"></span> Bulchana School. All rights reserved.</p>
+      <p>IT Department | Technology | Innovation</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelector(".year").textContent = new Date().getFullYear();
+  document.getElementById("menuToggle").addEventListener("click", function() {
+    document.getElementById("navigation").classList.toggle("show");
+  });
+</script>
+</body>
+</html>
