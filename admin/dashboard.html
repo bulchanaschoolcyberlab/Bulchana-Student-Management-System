@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Bulchana SMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#17243a}
+header{background:#102d55;color:white;padding:17px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+header h2{margin:0;font-size:19px}
+header span{color:#a9ccff}
+button{cursor:pointer;border:0;border-radius:7px;padding:11px 15px;font-weight:bold}
+.logout{background:#fff;color:#173d70}
+.layout{display:flex;min-height:calc(100vh - 60px)}
+nav{width:230px;background:#fff;border-right:1px solid #e0e7f0;padding:18px 12px}
+nav button{display:block;width:100%;text-align:left;background:transparent;color:#42536b;margin-bottom:7px}
+nav button.active,nav button:hover{background:#eaf2ff;color:#1459b5}
+main{flex:1;padding:25px;min-width:0}
+h1{margin:0 0 7px;font-size:27px}
+.muted{color:#718096;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(130px,1fr));gap:15px;margin:22px 0}
+.stat,.panel{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px}
+.stat small{color:#718096}
+.stat strong{display:block;font-size:27px;margin-top:10px}
+.panel{margin-top:18px;overflow:hidden}
+.panel h2{font-size:18px;margin:0 0 15px}
+.section{display:none}
+.section.active{display:block}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:650px;font-size:13px}
+th,td{padding:12px 10px;text-align:left;border-bottom:1px solid #edf0f5}
+th{background:#f7f9fc;color:#52627a}
+.action{background:#1764d2;color:white;padding:8px 11px}
+input{padding:11px;border:1px solid #d6dfeb;border-radius:7px;width:100%;margin:6px 0 14px}
+label{font-size:13px;font-weight:bold}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.primary{background:#1764d2;color:white}
+.message{padding:12px;border-radius:7px;margin:12px 0;display:none}
+.error{background:#fff0f0;color:#a82020}
+.success{background:#eaf8ef;color:#176b39}
+.badge{padding:5px 8px;border-radius:20px;background:#fff2d7;color:#805600}
+.empty{padding:22px;color:#718096;text-align:center}
+@media(max-width:750px){
+ .layout{display:block}
+ nav{width:100%;display:flex;overflow-x:auto;gap:5px;border-right:0;border-bottom:1px solid #ddd}
+ nav button{white-space:nowrap;width:auto}
+ main{padding:15px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h2>BULCHANA <span>SMS | ADMIN</span></h2>
+  <button class="logout" onclick="logout()">Sign Out</button>
+</header>
+
+<div class="layout">
+<nav>
+  <button class="active" data-section="overview">📊 Overview</button>
+  <button data-section="students">🎓 Students</button>
+  <button data-section="teachers">👨‍🏫 Teachers</button>
+  <button data-section="payments">💳 Payments</button>
+  <button data-section="classes">🏫 Classes</button>
+  <button data-section="subjects">📚 Subjects</button>
+  <button data-section="years">📅 Academic Years</button>
+  <button data-section="settings">⚙️ Payment Settings</button>
+</nav>
+
+<main>
+  <div id="welcome">
+    <h1>Admin Dashboard</h1>
+    <p class="muted">Welcome to Bulchana School administration.</p>
+  </div>
+
+  <div id="message" class="message"></div>
+
+  <section id="overview" class="section active">
+    <div class="stats">
+      <div class="stat"><small>Total Students</small><strong id="studentCount">—</strong></div>
+      <div class="stat"><small>Total Teachers</small><strong id="teacherCount">—</strong></div>
+      <div class="stat"><small>Pending Payments</small><strong id="pendingCount">—</strong></div>
+      <div class="stat"><small>Total Classes</small><strong id="classCount">—</strong></div>
+    </div>
+    <div class="panel">
+      <h2>Administration</h2>
+      <p class="muted">Use the navigation menu to manage school records and review student registration payments.</p>
+      <button class="primary" onclick="showSection('payments')">Review Payments</button>
+    </div>
+  </section>
+
+  <section id="students" class="section">
+    <div class="panel">
+      <h2>Student Records</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student No.</th><th>Name</th><th>Grade</th><th>Status</th><th>Registration</th></tr></thead>
+          <tbody id="studentsTable"><tr><td colspan="5">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="teachers" class="section">
+    <div class="panel">
+      <h2>Teacher Records</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Teacher No.</th><th>Name</th><th>Email</th><th>Specialization</th><th>Status</th></tr></thead>
+          <tbody id="teachersTable"><tr><td colspan="5">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="payments" class="section">
+    <div class="panel">
+      <h2>Student Registration Payments</h2>
+      <p class="muted">Check the actual bank deposit before verifying a payment. A student-submitted reference is not proof of payment.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Student</th><th>Depositor</th><th>Amount</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="paymentsTable"><tr><td colspan="6">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="classes" class="section">
+    <div class="panel">
+      <h2>School Classes</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Class</th><th>Grade</th><th>Section</th><th>Academic Year</th><th>Status</th></tr></thead>
+          <tbody id="classesTable"><tr><td colspan="5">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="subjects" class="section">
+    <div class="panel">
+      <h2>School Subjects</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Code</th><th>Subject</th><th>Grade</th><th>Optional</th><th>Status</th></tr></thead>
+          <tbody id="subjectsTable"><tr><td colspan="5">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="years" class="section">
+    <div class="panel">
+      <h2>Academic Years</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Year</th><th>Start</th><th>End</th><th>Status</th><th>Current</th></tr></thead>
+          <tbody id="yearsTable"><tr><td colspan="5">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="settings" class="section">
+    <div class="panel">
+      <h2>Registration Payment Settings</h2>
+      <p class="muted">These details are shown to students as payment instructions.</p>
+      <form id="settingsForm">
+        <label>Bank name</label>
+        <input id="bankName" required>
+        <label>Account number</label>
+        <input id="accountNumber" required>
+        <label>Account holder</label>
+        <input id="accountHolder" required>
+        <label>Registration fee amount (ETB)</label>
+        <input id="feeAmount" type="number" min="0" step="0.01" required>
+        <button class="primary" type="submit">Save Payment Settings</button>
+      </form>
+    </div>
+  </section>
+</main>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[char]);
+}
+
+function showMessage(message, type="success") {
+  const box = $("message");
+  box.textContent = message;
+  box.className = "message " + type;
+  box.style.display = "block";
+}
+
+function showSection(name) {
+  document.querySelectorAll(".section").forEach(section =>
+    section.classList.toggle("active", section.id === name)
+  );
+  document.querySelectorAll("nav button").forEach(button =>
+    button.classList.toggle("active", button.dataset.section === name)
+  );
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => showSection(button.dataset.section));
+});
+
+async function countRows(table, filters) {
+  let query = supabaseClient.from(table).select("*", {count:"exact",head:true});
+  if (filters) query = filters(query);
+  const {count,error} = await query;
+  if (error) throw error;
+  return count ?? 0;
+}
+
+async function loadOverview() {
+  const [students,teachers,payments,classes] = await Promise.all([
+    countRows("students"),
+    countRows("teachers"),
+    countRows("payments",q => q.eq("payment_status","Pending")),
+    countRows("classes")
+  ]);
+  $("studentCount").textContent = students;
+  $("teacherCount").textContent = teachers;
+  $("pendingCount").textContent = payments;
+  $("classCount").textContent = classes;
+}
+
+async function loadStudents() {
+  const {data,error} = await supabaseClient
+    .from("students")
+    .select("student_number,first_name,middle_name,last_name,current_grade,student_status,registration_status")
+    .order("created_at",{ascending:false});
+  if (error) throw error;
+
+  $("studentsTable").innerHTML = data.length ? data.map(s => `
+    <tr>
+      <td>${safe(s.student_number)}</td>
+      <td>${safe([s.first_name,s.middle_name,s.last_name].filter(Boolean).join(" "))}</td>
+      <td>${safe(s.current_grade)}</td>
+      <td>${safe(s.student_status)}</td>
+      <td>${safe(s.registration_status)}</td>
+    </tr>`).join("") : '<tr><td colspan="5" class="empty">No student records found.</td></tr>';
+}
+
+async function loadTeachers() {
+  const {data,error} = await supabaseClient
+    .from("teachers")
+    .select("teacher_number,first_name,middle_name,last_name,email,subject_specialization,teacher_status")
+    .order("created_at",{ascending:false});
+  if (error) throw error;
+
+  $("teachersTable").innerHTML = data.length ? data.map(t => `
+    <tr>
+      <td>${safe(t.teacher_number)}</td>
+      <td>${safe([t.first_name,t.middle_name,t.last_name].filter(Boolean).join(" "))}</td>
+      <td>${safe(t.email)}</td>
+      <td>${safe(t.subject_specialization)}</td>
+      <td>${safe(t.teacher_status)}</td>
+    </tr>`).join("") : '<tr><td colspan="5" class="empty">No teacher records found.</td></tr>';
+}
+
+async function loadPayments() {
+  const {data,error} = await supabaseClient
+    .from("payments")
+    .select("id,payment_type,amount,currency,payment_status,payment_reference,depositor_name,deposited_amount,deposit_date,transaction_id,student_id,students(first_name,middle_name,last_name,student_number)")
+    .order("created_at",{ascending:false});
+  if (error) throw error;
+
+  $("paymentsTable").innerHTML = data.length ? data.map(p => {
+    const student = p.students;
+    const studentName = student
+      ? [student.first_name,student.middle_name,student.last_name].filter(Boolean).join(" ")
+      : "Student #" + p.student_id;
+    const canVerify = p.payment_type === "Registration" && p.payment_status === "Pending";
+    return `<tr>
+      <td>${safe(studentName)}</td>
+      <td>${safe(p.depositor_name)}</td>
+      <td>${safe(p.deposited_amount ?? p.amount)} ${safe(p.currency)}</td>
+      <td>${safe(p.deposit_date)}</td>
+      <td><span class="badge">${safe(p.payment_status)}</span></td>
+      <td>${canVerify
+        ? `<button class="action" onclick="verifyPayment(${Number(p.id)})">Verify</button>`
+        : safe(p.transaction_id || "—")}</td>
+    </tr>`;
+  }).join("") : '<tr><td colspan="6" class="empty">No payment records found.</td></tr>';
+}
+
+async function verifyPayment(paymentId) {
+  const transactionId = prompt("Enter the bank transaction ID after checking the official bank record:");
+  if (!transactionId || !transactionId.trim()) return;
+
+  if (!confirm("Have you independently confirmed this deposit with the bank?")) return;
+
+  try {
+    const {data,error} = await supabaseClient.rpc(
+      "admin_verify_registration_payment",
+      {p_payment_id:paymentId,p_transaction_id:transactionId.trim()}
+    );
+    if (error) throw error;
+    if (data !== true) throw new Error("Payment verification was not completed.");
+
+    showMessage("Payment verified. Registration confirmation was processed.");
+    await loadPayments();
+    await loadOverview();
+    await loadStudents();
+  } catch(error) {
+    showMessage(error.message,"error");
+  }
+}
+
+async function loadClasses() {
+  const {data,error} = await supabaseClient
+    .from("classes")
+    .select("class_name,grade_level,section,academic_year,class_status")
+    .order("grade_level");
+  if (error) throw error;
+  $("classesTable").innerHTML = data.length ? data.map(c => `
+    <tr><td>${safe(c.class_name)}</td><td>${safe(c.grade_level)}</td>
+    <td>${safe(c.section)}</td><td>${safe(c.academic_year)}</td>
+    <td>${safe(c.class_status)}</td></tr>`).join("")
+    : '<tr><td colspan="5" class="empty">No classes found.</td></tr>';
+}
+
+async function loadSubjects() {
+  const {data,error} = await supabaseClient
+    .from("subjects")
+    .select("subject_code,subject_name,grade_level,is_optional,subject_status")
+    .order("subject_name");
+  if (error) throw error;
+  $("subjectsTable").innerHTML = data.length ? data.map(s => `
+    <tr><td>${safe(s.subject_code)}</td><td>${safe(s.subject_name)}</td>
+    <td>${safe(s.grade_level)}</td><td>${s.is_optional ? "Yes" : "No"}</td>
+    <td>${safe(s.subject_status)}</td></tr>`).join("")
+    : '<tr><td colspan="5" class="empty">No subjects found.</td></tr>';
+}
+
+async function loadYears() {
+  const {data,error} = await supabaseClient
+    .from("academic_years")
+    .select("year_name,start_date,end_date,year_status,is_current")
+    .order("start_date",{ascending:false});
+  if (error) throw error;
+  $("yearsTable").innerHTML = data.length ? data.map(y => `
+    <tr><td>${safe(y.year_name)}</td><td>${safe(y.start_date)}</td>
+    <td>${safe(y.end_date)}</td><td>${safe(y.year_status)}</td>
+    <td>${y.is_current ? "Yes" : "No"}</td></tr>`).join("")
+    : '<tr><td colspan="5" class="empty">No academic years found.</td></tr>';
+}
+
+async function loadSettings() {
+  const {data,error} = await supabaseClient
+    .from("payment_settings")
+    .select("bank_name,account_number,account_holder,registration_fee_amount,currency")
+    .eq("id",1)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) {
+    showMessage("No payment settings have been configured yet.","error");
+    return;
+  }
+  $("bankName").value = data.bank_name;
+  $("accountNumber").value = data.account_number;
+  $("accountHolder").value = data.account_holder;
+  $("feeAmount").value = data.registration_fee_amount;
+}
+
+$("settingsForm").addEventListener("submit",async event => {
+  event.preventDefault();
+  try {
+    const {error} = await supabaseClient.from("payment_settings").update({
+      bank_name:$("bankName").value.trim(),
+      account_number:$("accountNumber").value.trim(),
+      account_holder:$("accountHolder").value.trim(),
+      registration_fee_amount:Number($("feeAmount").value),
+      updated_at:new Date().toISOString()
+    }).eq("id",1);
+    if (error) throw error;
+    showMessage("Payment settings updated successfully.");
+  } catch(error) {
+    showMessage(error.message,"error");
+  }
+});
+
+async function startDashboard() {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      location.href = "../login.html";
+      return;
+    }
+
+    const profile = await getMyProfile();
+    if (!profile || profile.role !== "admin") {
+      alert("Access denied. This page is for administrators only.");
+      location.href = "../login.html";
+      return;
+    }
+
+    $("welcome").innerHTML = `
+      <h1>Welcome, ${safe(profile.full_name)}</h1>
+      <p class="muted">Bulchana School administration dashboard.</p>`;
+
+    const results = await Promise.allSettled([
+      loadOverview(),loadStudents(),loadTeachers(),loadPayments(),
+      loadClasses(),loadSubjects(),loadYears(),loadSettings()
+    ]);
+
+    const failed = results.filter(r => r.status === "rejected");
+    if (failed.length) {
+      console.error("Dashboard loading errors:",failed);
+      showMessage("Some information could not be loaded. Check the browser console or contact the developer.","error");
+    }
+  } catch(error) {
+    console.error(error);
+    showMessage(error.message,"error");
+  }
+}
+
+startDashboard();
+</script>
+</body>
+</html>
