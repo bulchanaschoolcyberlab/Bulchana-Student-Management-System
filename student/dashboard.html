@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | Bulchana SMS</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/supabase.js"></script>
+  <script src="../js/auth.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f1f5f9; color: #172033; }
+    header { background: #123b70; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    header h2 { margin: 0; }
+    button { border: 0; border-radius: 7px; padding: 11px 16px; cursor: pointer; font-weight: bold; }
+    .logout { background: white; color: #123b70; }
+    main { max-width: 1000px; margin: 25px auto; padding: 0 16px; }
+    .panel, .stat { background: white; padding: 20px; border-radius: 12px; margin-bottom: 18px; box-shadow: 0 2px 9px #0000000c; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+    .stat strong { display: block; font-size: 25px; color: #123b70; margin-top: 8px; }
+    h1 { margin-top: 0; }
+    .muted { color: #64748b; }
+    .message { padding: 12px; background: #eff6ff; border-radius: 8px; }
+    .error { background: #fee2e2; color: #991b1b; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; }
+    th, td { text-align: left; padding: 12px; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f8fafc; }
+    footer { text-align: center; color: #64748b; padding: 25px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>Bulchana SMS — Student</h2>
+  <button class="logout" onclick="logout()">Log out</button>
+</header>
+
+<main>
+  <section class="panel">
+    <h1>Student Dashboard</h1>
+    <p id="studentName" class="muted">Loading your account...</p>
+    <p id="studentNumber" class="muted"></p>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      Current Grade
+      <strong id="grade">—</strong>
+    </div>
+    <div class="stat">
+      Registration Status
+      <strong id="registrationStatus">—</strong>
+    </div>
+    <div class="stat">
+      Student Status
+      <strong id="studentStatus">—</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>My Class</h2>
+    <div id="classInfo" class="message">Loading class information...</div>
+  </section>
+
+  <section class="panel">
+    <h2>My Results</h2>
+    <div id="results" class="message">Loading results...</div>
+  </section>
+
+  <section class="panel">
+    <h2>My Payments</h2>
+    <div id="payments" class="message">Loading payment information...</div>
+  </section>
+</main>
+
+<footer>
+  Bulchana Student Management System · IT Department
+</footer>
+
+<script>
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#039;"
+  })[character]);
+}
+
+function showError(id, message) {
+  const element = document.getElementById(id);
+  element.textContent = message;
+  element.classList.add("error");
+}
+
+async function startStudentDashboard() {
+  try {
+    const profile = await requireLogin();
+    if (!profile) return;
+
+    if (profile.role !== "student" || !profile.student_id) {
+      showError("classInfo", "This page is only for approved student accounts.");
+      return;
+    }
+
+    const studentQuery = await supabaseClient
+      .from("students")
+      .select("id, student_number, first_name, middle_name, last_name, current_grade, student_status, registration_status, class_id")
+      .eq("id", profile.student_id)
+      .maybeSingle();
+
+    if (studentQuery.error) throw studentQuery.error;
+    const student = studentQuery.data;
+
+    if (!student) {
+      showError("classInfo", "Student record not found. Contact the administrator.");
+      return;
+    }
+
+    document.getElementById("studentName").textContent =
+      "Welcome, " + [student.first_name, student.middle_name, student.last_name]
+        .filter(Boolean).join(" ");
+
+    document.getElementById("studentNumber").textContent =
+      "Student number: " + (student.student_number || "Not assigned");
+
+    document.getElementById("grade").textContent =
+      student.current_grade || "Not assigned";
+
+    document.getElementById("registrationStatus").textContent =
+      student.registration_status || "Pending";
+
+    document.getElementById("studentStatus").textContent =
+      student.student_status || "Not specified";
+
+    if (student.class_id) {
+      const classQuery = await supabaseClient
+        .from("classes")
+        .select("class_name, grade_level, section, academic_year")
+        .eq("id", student.class_id)
+        .maybeSingle();
+
+      if (classQuery.error) throw classQuery.error;
+
+      const item = classQuery.data;
+
+      document.getElementById("classInfo").innerHTML = item
+        ? `<strong>${escapeHTML(item.class_name)}</strong>
+           <p>Grade: ${escapeHTML(item.grade_level)}</p>
+           <p>Section: ${escapeHTML(item.section)}</p>
+           <p>Academic year: ${escapeHTML(item.academic_year)}</p>`
+        : "Your class information is not available yet.";
+    } else {
+      document.getElementById("classInfo").textContent =
+        "You have not been assigned to a class yet.";
+    }
+
+    const resultsQuery = await supabaseClient
+      .from("student_results")
+      .select("exam_type, semester, marks_obtained, maximum_marks, percentage, teacher_comment, subjects(subject_name)")
+      .eq("student_id", student.id)
+      .order("created_at", { ascending: false });
+
+    if (resultsQuery.error) throw resultsQuery.error;
+
+    const resultRows = resultsQuery.data || [];
+    const resultsElement = document.getElementById("results");
+
+    if (!resultRows.length) {
+      resultsElement.textContent = "No results have been published yet.";
+    } else {
+      resultsElement.className = "table-wrap";
+      resultsElement.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Exam</th>
+              <th>Semester</th>
+              <th>Marks</th>
+              <th>Percentage</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${resultRows.map(r => `
+              <tr>
+                <td>${escapeHTML(r.subjects?.subject_name || "Subject")}</td>
+                <td>${escapeHTML(r.exam_type)}</td>
+                <td>${escapeHTML(r.semester)}</td>
+                <td>${escapeHTML(r.marks_obtained)} / ${escapeHTML(r.maximum_marks)}</td>
+                <td>${r.percentage == null ? "—" : escapeHTML(r.percentage) + "%"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>`;
+    }
+
+    const paymentsQuery = await supabaseClient
+      .from("payments")
+      .select("payment_type, amount, currency, payment_status, payment_date")
+      .eq("student_id", student.id)
+      .order("created_at", { ascending: false });
+
+    if (paymentsQuery.error) throw paymentsQuery.error;
+
+    const paymentRows = paymentsQuery.data || [];
+    const paymentElement = document.getElementById("payments");
+
+    if (!paymentRows.length) {
+      paymentElement.textContent = "No payment records are available.";
+    } else {
+      paymentElement.className = "table-wrap";
+      paymentElement.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${paymentRows.map(p => `
+              <tr>
+                <td>${escapeHTML(p.payment_type)}</td>
+                <td>${escapeHTML(p.amount)} ${escapeHTML(p.currency)}</td>
+                <td>${escapeHTML(p.payment_status)}</td>
+                <td>${escapeHTML(p.payment_date || "—")}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>`;
+    }
+
+  } catch (error) {
+    console.error(error);
+    showError("classInfo", "Unable to load dashboard: " + error.message);
+  }
+}
+
+startStudentDashboard();
+</script>
+
+</body>
+</html>
