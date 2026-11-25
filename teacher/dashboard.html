@@ -2,229 +2,594 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teacher Dashboard | Bulchana SMS</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="../js/supabase.js"></script>
-  <script src="../js/auth.js"></script>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      color: #172033;
-    }
-    header {
-      background: #123b70;
-      color: white;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    header h2 { margin: 0; }
-    button {
-      border: 0;
-      border-radius: 7px;
-      padding: 11px 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .logout { background: white; color: #123b70; }
-    main { max-width: 1000px; margin: 25px auto; padding: 0 16px; }
-    .welcome, .panel, .class-card {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 9px #0000000c;
-    }
-    .welcome h1 { margin-top: 0; }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 15px;
-    }
-    .stat {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 9px #0000000c;
-    }
-    .stat strong {
-      display: block;
-      font-size: 28px;
-      color: #123b70;
-      margin-top: 8px;
-    }
-    .class-card h3 { margin-top: 0; color: #123b70; }
-    .muted { color: #64748b; }
-    .message { padding: 12px; border-radius: 8px; background: #eff6ff; }
-    .error { background: #fee2e2; color: #991b1b; }
-    footer { text-align: center; color: #64748b; padding: 25px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Portal | Bulchana SMS</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/supabase.js"></script>
+<script src="../js/auth.js"></script>
+
+<style>
+:root {
+  --navy:#102747;
+  --blue:#1765c1;
+  --gold:#e5ad42;
+  --bg:#f4f6fa;
+  --text:#172033;
+  --muted:#718096;
+  --border:#e5eaf1;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  background:var(--navy);
+  color:white;
+  padding:18px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.brand { font-size:19px;font-weight:bold; }
+.brand span { color:var(--gold); }
+button {
+  border:0;
+  border-radius:8px;
+  padding:12px 17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.logout { background:white;color:var(--navy); }
+main { max-width:1150px;margin:30px auto;padding:0 18px; }
+.welcome {
+  background:linear-gradient(120deg,#102747,#1765c1);
+  color:white;
+  padding:28px;
+  border-radius:15px;
+  margin-bottom:22px;
+}
+.welcome h1 { margin:0 0 8px; }
+.welcome p { margin:0;color:#dbeafe; }
+.stats {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  margin-bottom:22px;
+}
+.stat,.panel {
+  background:white;
+  padding:22px;
+  border-radius:13px;
+  box-shadow:0 3px 15px #1027470a;
+}
+.stat span { color:var(--muted); }
+.stat strong {
+  display:block;
+  font-size:30px;
+  color:var(--navy);
+  margin-top:10px;
+}
+.panel { margin-bottom:22px; }
+.panel h2 { margin-top:0;color:var(--navy); }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+}
+label {
+  display:block;
+  font-weight:bold;
+  margin:14px 0 7px;
+  font-size:14px;
+}
+input,select {
+  width:100%;
+  padding:13px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:white;
+  font-size:15px;
+}
+.primary {
+  background:var(--blue);
+  color:white;
+  margin-top:18px;
+  width:100%;
+}
+.primary:disabled { opacity:.6;cursor:not-allowed; }
+.message {
+  padding:13px;
+  border-radius:8px;
+  margin-top:14px;
+  background:#eff6ff;
+  color:#174b85;
+  white-space:pre-wrap;
+}
+.error { background:#fee2e2;color:#991b1b; }
+.success { background:#dcfce7;color:#166534; }
+.class-item {
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:15px;
+  margin-top:12px;
+}
+.class-item h3 { margin:0 0 8px;color:var(--navy); }
+.muted { color:var(--muted); }
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:14px;
+}
+th,td {
+  padding:11px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+}
+th { background:#f1f5f9;color:var(--navy); }
+.table-wrap { overflow-x:auto; }
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px;
+}
+@media(max-width:600px) {
+  header { padding:15px; }
+  .brand { font-size:16px; }
+  .welcome { padding:22px; }
+  .panel { padding:17px; }
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <h2>Bulchana SMS — Teacher</h2>
+  <div class="brand">BULCHANA <span>SMS</span> | TEACHER</div>
   <button class="logout" onclick="logout()">Log out</button>
 </header>
 
 <main>
-  <section class="welcome">
-    <h1>Teacher Dashboard</h1>
-    <p id="teacherName" class="muted">Loading your account...</p>
-  </section>
 
-  <section class="stats">
-    <div class="stat">
-      Assigned Classes
-      <strong id="classCount">—</strong>
-    </div>
-    <div class="stat">
-      Students in Your Classes
-      <strong id="studentCount">—</strong>
-    </div>
-  </section>
+<section class="welcome">
+  <h1>Teacher Dashboard</h1>
+  <p id="teacherName">Loading your account...</p>
+</section>
 
-  <section class="panel">
-    <h2>My Assigned Classes</h2>
-    <div id="classList" class="message">Loading assigned classes...</div>
-  </section>
+<section class="stats">
+  <div class="stat">
+    <span>Assigned Classes</span>
+    <strong id="classCount">—</strong>
+  </div>
+  <div class="stat">
+    <span>Students in Your Classes</span>
+    <strong id="studentCount">—</strong>
+  </div>
+  <div class="stat">
+    <span>Assigned Subjects</span>
+    <strong id="subjectCount">—</strong>
+  </div>
+</section>
 
-  <section class="panel">
-    <h2>Teacher Tools</h2>
+<section class="panel">
+  <h2>My Assigned Classes</h2>
+  <div id="classList" class="muted">Loading classes...</div>
+</section>
+
+<section class="panel">
+  <h2>📄 Upload Mark Sheet</h2>
+  <p class="muted">
+    Upload your completed subject mark sheet. Gemini AI will read the
+    document and prepare marks for your review.
+  </p>
+
+  <form id="uploadForm">
+
+    <label for="assignment">Assigned class and subject</label>
+    <select id="assignment" required>
+      <option value="">Loading assignments...</option>
+    </select>
+
+    <label for="semester">Semester</label>
+    <select id="semester" required>
+      <option value="Semester 1">Semester 1</option>
+      <option value="Semester 2">Semester 2</option>
+    </select>
+
+    <label for="markFile">Choose mark sheet</label>
+    <input
+      type="file"
+      id="markFile"
+      accept=".jpg,.jpeg,.png,.webp,.pdf"
+      required
+    >
+
     <p class="muted">
-      Your class management, student records, attendance and marks tools
-      will be added here as we build and test each feature.
+      Supported files: PDF, JPG, PNG and WEBP. Maximum size: 10 MB.
     </p>
-  </section>
+
+    <button type="submit" class="primary" id="uploadButton">
+      Upload and Extract Marks
+    </button>
+
+    <div id="uploadMessage" hidden class="message"></div>
+  </form>
+</section>
+
+<section class="panel" id="resultsPanel" hidden>
+  <h2>AI Extraction Preview</h2>
+  <p class="muted">
+    Check the extracted information carefully. These marks are not yet
+    official student results.
+  </p>
+
+  <div id="warnings"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Student Number</th>
+          <th>Student Name</th>
+          <th>Marks / 100</th>
+          <th>Confidence</th>
+          <th>Review</th>
+        </tr>
+      </thead>
+      <tbody id="resultsBody"></tbody>
+    </table>
+  </div>
+</section>
+
 </main>
 
 <footer>
-  Bulchana Student Management System · IT Department
+  Bulchana Student Management System<br>
+  IT Department | Technology | Innovation
 </footer>
 
 <script>
+let teacherProfile = null;
+let teacherAssignments = [];
+
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
   })[character]);
+}
+
+function showMessage(message, type = "") {
+  const box = document.getElementById("uploadMessage");
+  box.hidden = false;
+  box.className = "message " + type;
+  box.textContent = message;
+}
+
+function subjectName(subject) {
+  return subject?.subject_name ||
+    subject?.name ||
+    subject?.subject_code ||
+    ("Subject #" + subject?.id);
 }
 
 async function startTeacherDashboard() {
   const classList = document.getElementById("classList");
 
   try {
-    const profile = await requireLogin();
-    if (!profile) return;
+    teacherProfile = await requireLogin();
 
-    if (profile.role !== "teacher" || !profile.teacher_id) {
-      classList.textContent = "This page is only for approved teacher accounts.";
-      classList.classList.add("error");
-      return;
+    if (!teacherProfile) return;
+
+    if (
+      teacherProfile.role !== "teacher" ||
+      !teacherProfile.teacher_id
+    ) {
+      throw new Error("This page is only for approved teacher accounts.");
     }
 
     const { data: teacher, error: teacherError } = await supabaseClient
       .from("teachers")
-      .select("first_name, middle_name, last_name")
-      .eq("id", profile.teacher_id)
+      .select("first_name,middle_name,last_name")
+      .eq("id", teacherProfile.teacher_id)
       .maybeSingle();
 
     if (teacherError) throw teacherError;
 
     const fullName = teacher
-      ? [teacher.first_name, teacher.middle_name, teacher.last_name]
-          .filter(Boolean).join(" ")
-      : profile.full_name || "Teacher";
+      ? [
+          teacher.first_name,
+          teacher.middle_name,
+          teacher.last_name
+        ].filter(Boolean).join(" ")
+      : teacherProfile.full_name || "Teacher";
 
     document.getElementById("teacherName").textContent =
-      "Welcome, " + fullName;
+      "Welcome back, " + fullName;
 
     const { data: assignments, error: assignmentError } =
       await supabaseClient
         .from("teacher_class_subjects")
-        .select("class_id, subject_id, academic_year_id")
-        .eq("teacher_id", profile.teacher_id);
+        .select("class_id,subject_id,academic_year_id")
+        .eq("teacher_id", teacherProfile.teacher_id);
 
     if (assignmentError) throw assignmentError;
 
+    teacherAssignments = assignments || [];
+
     const classIds = [...new Set(
-      (assignments || []).map(item => item.class_id).filter(Boolean)
+      teacherAssignments.map(a => a.class_id).filter(Boolean)
+    )];
+
+    const subjectIds = [...new Set(
+      teacherAssignments.map(a => a.subject_id).filter(Boolean)
     )];
 
     document.getElementById("classCount").textContent = classIds.length;
+    document.getElementById("subjectCount").textContent = subjectIds.length;
 
-    if (classIds.length === 0) {
+    if (!classIds.length) {
       document.getElementById("studentCount").textContent = "0";
       classList.textContent =
-        "No classes have been assigned to your account yet. Contact the administrator.";
+        "No classes assigned yet. Contact your administrator.";
+      document.getElementById("assignment").innerHTML =
+        '<option value="">No assignments available</option>';
       return;
     }
 
-    const { data: classes, error: classesError } = await supabaseClient
-      .from("classes")
-      .select("id, class_name, grade_level, section, academic_year")
-      .in("id", classIds);
+    const [classResult, subjectResult, studentResult, yearResult] =
+      await Promise.all([
+        supabaseClient.from("classes")
+          .select("*").in("id", classIds),
+        supabaseClient.from("subjects")
+          .select("*").in("id", subjectIds),
+        supabaseClient.from("students")
+          .select("id,class_id").in("class_id", classIds),
+        supabaseClient.from("academic_years")
+          .select("*")
+      ]);
 
-    if (classesError) throw classesError;
+    if (classResult.error) throw classResult.error;
+    if (subjectResult.error) throw subjectResult.error;
+    if (studentResult.error) throw studentResult.error;
+    if (yearResult.error) throw yearResult.error;
 
-    const { data: students, error: studentsError } = await supabaseClient
-      .from("students")
-      .select("id, class_id")
-      .in("class_id", classIds);
-
-    if (studentsError) throw studentsError;
+    const classes = classResult.data || [];
+    const subjects = subjectResult.data || [];
+    const students = studentResult.data || [];
+    const years = yearResult.data || [];
 
     document.getElementById("studentCount").textContent =
-      (students || []).length;
-
-    if (!classes || classes.length === 0) {
-      classList.textContent =
-        "Your assignments were found, but the class details could not be displayed.";
-      return;
-    }
-
-    classList.className = "";
+      students.length;
 
     classList.innerHTML = classes.map(item => {
-      const count = (students || []).filter(
-        student => String(student.class_id) === String(item.id)
+      const count = students.filter(
+        s => String(s.class_id) === String(item.id)
       ).length;
 
-      const subjectIds = [...new Set(
-        (assignments || [])
-          .filter(a => String(a.class_id) === String(item.id))
-          .map(a => a.subject_id)
-          .filter(Boolean)
-      )];
+      const subjectCount = teacherAssignments.filter(
+        a => String(a.class_id) === String(item.id)
+      ).length;
 
       return `
-        <div class="class-card">
-          <h3>${escapeHTML(item.class_name || "Class")}</h3>
-          <p>Grade: ${escapeHTML(item.grade_level || "Not specified")}</p>
-          <p>Section: ${escapeHTML(item.section || "Not specified")}</p>
-          <p>Academic year: ${escapeHTML(item.academic_year || "Not specified")}</p>
+        <div class="class-item">
+          <h3>${escapeHTML(item.class_name)}</h3>
+          <p class="muted">
+            Grade: ${escapeHTML(item.grade_level || "—")}
+            · Section: ${escapeHTML(item.section || "—")}
+          </p>
           <p>Students: ${count}</p>
-          <p>Assigned subject records: ${subjectIds.length}</p>
+          <p>Assigned subject records: ${subjectCount}</p>
         </div>
       `;
     }).join("");
 
+    const assignmentSelect = document.getElementById("assignment");
+    assignmentSelect.innerHTML =
+      '<option value="">Choose your class and subject</option>';
+
+    teacherAssignments.forEach((a, index) => {
+      const cls = classes.find(c => String(c.id) === String(a.class_id));
+      const sub = subjects.find(s => String(s.id) === String(a.subject_id));
+      const year = years.find(y =>
+        String(y.id) === String(a.academic_year_id)
+      );
+
+      if (!cls || !sub || !a.academic_year_id) return;
+
+      const option = document.createElement("option");
+      option.value = String(index);
+      option.textContent =
+        cls.class_name + " | " + subjectName(sub) +
+        " | " + (year?.year_name || "Academic year");
+
+      assignmentSelect.appendChild(option);
+    });
+
+    if (assignmentSelect.options.length === 1) {
+      assignmentSelect.innerHTML =
+        '<option value="">No complete class/subject/year assignments found</option>';
+    }
+
   } catch (error) {
     console.error(error);
-    classList.textContent = "Could not load your dashboard: " + error.message;
-    classList.classList.add("error");
+    classList.textContent = "Dashboard error: " + error.message;
   }
+}
+
+document.getElementById("uploadForm").addEventListener(
+  "submit",
+  async function(event) {
+    event.preventDefault();
+
+    const button = document.getElementById("uploadButton");
+    button.disabled = true;
+    button.textContent = "Processing...";
+
+    document.getElementById("resultsPanel").hidden = true;
+
+    try {
+      const selectedIndex =
+        document.getElementById("assignment").value;
+
+      if (selectedIndex === "") {
+        throw new Error("Choose an assigned class and subject.");
+      }
+
+      const assignment = teacherAssignments[Number(selectedIndex)];
+
+      if (!assignment) {
+        throw new Error("Invalid assignment selected.");
+      }
+
+      const file = document.getElementById("markFile").files[0];
+
+      if (!file) {
+        throw new Error("Choose a mark sheet file.");
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error("File exceeds the 10 MB limit.");
+      }
+
+      const allowedTypes = [
+        "application/pdf",
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        throw new Error("Please choose a PDF, JPG, PNG or WEBP file.");
+      }
+
+      const { data: sessionData, error: sessionError } =
+        await supabaseClient.auth.getSession();
+
+      if (sessionError) throw sessionError;
+
+      const session = sessionData.session;
+
+      if (!session?.user) {
+        throw new Error("Your login session has expired. Please log in again.");
+      }
+
+      showMessage("Uploading your mark sheet...");
+
+      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+      const filePath =
+        session.user.id + "/" + Date.now() + "_" + safeName;
+
+      const { error: storageError } = await supabaseClient
+        .storage
+        .from("teacher-mark-sheets")
+        .upload(filePath, file, {
+          contentType: file.type,
+          upsert: false
+        });
+
+      if (storageError) throw storageError;
+
+      showMessage("File uploaded. Creating mark sheet record...");
+
+      const { data: uploadId, error: createError } =
+        await supabaseClient.rpc("create_mark_sheet_upload", {
+          p_class_id: assignment.class_id,
+          p_subject_id: assignment.subject_id,
+          p_academic_year_id: assignment.academic_year_id,
+          p_semester: document.getElementById("semester").value,
+          p_file_path: filePath,
+          p_file_name: file.name
+        });
+
+      if (createError) throw createError;
+
+      showMessage("Sending your mark sheet to Gemini AI...");
+
+      const { data: extraction, error: extractionError } =
+        await supabaseClient.functions.invoke(
+          "process-mark-sheet",
+          {
+            body: { upload_id: uploadId }
+          }
+        );
+
+      if (extractionError) {
+        throw extractionError;
+      }
+
+      if (!extraction?.success || !Array.isArray(extraction.students)) {
+        throw new Error(
+          extraction?.error || "AI extraction did not return valid results."
+        );
+      }
+
+      displayResults(extraction);
+
+      showMessage(
+        "Extraction completed! Please review every row before using these marks.",
+        "success"
+      );
+
+    } catch (error) {
+      console.error(error);
+      showMessage("Error: " + error.message, "error");
+    } finally {
+      button.disabled = false;
+      button.textContent = "Upload and Extract Marks";
+    }
+  }
+);
+
+function displayResults(extraction) {
+  const panel = document.getElementById("resultsPanel");
+  const body = document.getElementById("resultsBody");
+  const warnings = document.getElementById("warnings");
+
+  body.innerHTML = "";
+
+  extraction.students.forEach(student => {
+    const row = document.createElement("tr");
+
+    const values = [
+      student.student_number ?? "Not read",
+      student.full_name ?? "Not read",
+      student.marks_obtained ?? "Unclear",
+      student.confidence == null
+        ? "Unknown"
+        : student.confidence + "%",
+      student.needs_review ? "Needs review" : "Check carefully"
+    ];
+
+    values.forEach(value => {
+      const cell = document.createElement("td");
+      cell.textContent = String(value);
+      row.appendChild(cell);
+    });
+
+    body.appendChild(row);
+  });
+
+  warnings.innerHTML = "";
+
+  (extraction.warnings || []).forEach(warning => {
+    const item = document.createElement("div");
+    item.className = "message error";
+    item.textContent = warning;
+    warnings.appendChild(item);
+  });
+
+  panel.hidden = false;
+  panel.scrollIntoView({ behavior:"smooth" });
 }
 
 startTeacherDashboard();
