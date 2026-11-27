@@ -5,418 +5,1453 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#102747">
-<title>Sign In | Bulchana School</title>
+<meta name="description" content="Bulchana School — Empowering students through quality education, technology and innovation.">
+<title>Bulchana School | Empowering Students Through Technology</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
-
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+:root {
+  --navy:#102747;
+  --deep:#091a30;
+  --blue:#1765c1;
+  --light-blue:#eaf3ff;
+  --gold:#e5ad42;
+  --white:#ffffff;
+  --text:#26384d;
+  --muted:#718096;
+  --bg:#f6f8fc;
+  --border:#e5eaf1;
+  --shadow:0 15px 45px rgba(16,39,71,.09);
+}
+
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html {
+  scroll-behavior:smooth;
+  scroll-padding-top:90px;
 }
 
 body {
-  min-height: 100vh;
-  font-family: 'DM Sans', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 25px;
+  font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  background:var(--white);
+  overflow-x:hidden;
+}
+
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+button {
+  font:inherit;
+}
+
+.container {
+  width:min(1180px,92%);
+  margin:auto;
+}
+
+/* TOP BAR */
+
+.topbar {
+  background:var(--deep);
+  color:#dce7f5;
+  padding:10px 0;
+  font-size:12px;
+}
+
+.topbar-inner {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.topbar-info {
+  display:flex;
+  gap:22px;
+  flex-wrap:wrap;
+}
+
+.topbar a:hover {
+  color:var(--gold);
+}
+
+/* HEADER */
+
+header {
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(15px);
+  box-shadow:0 3px 18px rgba(0,0,0,.05);
+}
+
+.navbar {
+  height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-shrink:0;
+}
+
+.brand-logo {
+  width:49px;
+  height:49px;
+  display:grid;
+  place-items:center;
+  background:var(--navy);
+  color:var(--gold);
+  border-radius:14px;
+  font-family:Manrope,sans-serif;
+  font-size:26px;
+  font-weight:800;
+}
+
+.brand-name strong {
+  display:block;
+  font-family:Manrope,sans-serif;
+  color:var(--navy);
+  font-size:17px;
+  font-weight:800;
+}
+
+.brand-name small {
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:1.3px;
+}
+
+.nav-links {
+  display:flex;
+  align-items:center;
+  gap:25px;
+}
+
+.nav-links > a,
+.nav-menu-button {
+  color:#34465d;
+  font-size:13px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.nav-links > a:hover,
+.nav-menu-button:hover {
+  color:var(--blue);
+}
+
+.nav-menu {
+  position:relative;
+}
+
+.nav-menu-button {
+  border:0;
+  background:none;
+  cursor:pointer;
+  padding:12px 0;
+}
+
+.dropdown {
+  position:absolute;
+  top:100%;
+  left:-15px;
+  min-width:215px;
+  padding:10px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:13px;
+  box-shadow:var(--shadow);
+  display:none;
+}
+
+.nav-menu.open .dropdown,
+.nav-menu:hover .dropdown,
+.nav-menu:focus-within .dropdown {
+  display:block;
+}
+
+.dropdown a {
+  display:block;
+  padding:11px 12px;
+  border-radius:8px;
+  color:var(--text);
+  font-size:13px;
+  font-weight:600;
+}
+
+.dropdown a:hover {
+  background:var(--light-blue);
+  color:var(--blue);
+}
+
+.nav-actions {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.btn {
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  padding:13px 21px;
+  border-radius:8px;
+  font-size:13px;
+  font-weight:800;
+  transition:.25s;
+  cursor:pointer;
+  border:1px solid transparent;
+}
+
+.btn-primary {
+  background:var(--blue);
+  color:white;
+}
+
+.btn-primary:hover {
+  background:#0f4e9b;
+  transform:translateY(-2px);
+}
+
+.btn-outline {
+  color:var(--navy);
+  border-color:#cbd6e4;
+  background:white;
+}
+
+.btn-outline:hover {
+  border-color:var(--blue);
+  color:var(--blue);
+}
+
+.menu-toggle {
+  display:none;
+  width:43px;
+  height:43px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:white;
+  color:var(--navy);
+  font-size:23px;
+  cursor:pointer;
+}
+
+/* HERO */
+
+.hero {
+  position:relative;
+  min-height:610px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
   background:
-    linear-gradient(rgba(8,25,47,.28), rgba(8,25,47,.48)),
-    url("https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1600&q=85")
-    center/cover no-repeat fixed;
+    linear-gradient(90deg,rgba(5,20,39,.94) 0%,rgba(8,31,58,.81) 48%,rgba(8,31,58,.30) 100%),
+    url("https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1900&q=90")
+    center/cover no-repeat;
 }
 
-.login-card {
-  width: 100%;
-  max-width: 510px;
-  padding: 43px 40px;
-  background: rgba(255,255,255,.91);
-  backdrop-filter: blur(13px);
-  -webkit-backdrop-filter: blur(13px);
-  border: 1px solid rgba(255,255,255,.65);
-  border-radius: 27px;
-  box-shadow: 0 25px 70px rgba(0,0,0,.22);
+.hero::after {
+  content:"";
+  position:absolute;
+  bottom:-90px;
+  right:-80px;
+  width:350px;
+  height:350px;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:50%;
 }
 
-.school-brand {
-  text-align: center;
-  margin-bottom: 27px;
+.hero-content {
+  position:relative;
+  z-index:2;
+  max-width:720px;
+  padding:90px 0;
+  animation:appear .9s ease both;
 }
 
-.brand-icon {
-  width: 53px;
-  height: 53px;
-  display: grid;
-  place-items: center;
-  margin: 0 auto 12px;
-  background: #102747;
-  color: #e5ad42;
-  border-radius: 15px;
-  font-family: Manrope, sans-serif;
-  font-size: 27px;
-  font-weight: 800;
+.eyebrow {
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 14px;
+  border:1px solid rgba(229,173,66,.5);
+  border-radius:30px;
+  color:#f4cf83;
+  background:rgba(229,173,66,.10);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
 }
 
-.school-brand h2 {
-  color: #102747;
-  font-family: Manrope, sans-serif;
-  font-size: 17px;
-  font-weight: 800;
+.eyebrow span {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
 }
 
-.school-brand p {
-  color: #64748b;
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  margin-top: 4px;
+.hero h1 {
+  margin:25px 0 20px;
+  color:white;
+  font-family:Manrope,sans-serif;
+  font-size:clamp(39px,6vw,68px);
+  line-height:1.12;
+  letter-spacing:-2px;
 }
 
-h1 {
-  color: #102747;
-  font-family: Manrope, sans-serif;
-  font-size: 29px;
-  text-align: center;
-  margin-bottom: 29px;
+.hero h1 em {
+  color:var(--gold);
+  font-style:normal;
 }
 
-.field {
-  margin-bottom: 22px;
+.hero-description {
+  max-width:580px;
+  color:#d8e2ef;
+  font-size:16px;
+  line-height:1.9;
 }
 
-.field label {
-  display: block;
-  color: #172b42;
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 9px;
+.hero-buttons {
+  display:flex;
+  gap:13px;
+  flex-wrap:wrap;
+  margin-top:32px;
 }
 
-.input-wrap {
-  position: relative;
+.btn-gold {
+  background:var(--gold);
+  color:var(--deep);
 }
 
-.input-wrap input {
-  width: 100%;
-  height: 59px;
-  padding: 0 48px 0 16px;
-  border: 1px solid #d5dce5;
-  border-radius: 11px;
-  background: rgba(255,255,255,.95);
-  font-size: 15px;
-  color: #102747;
-  outline: none;
-  transition: .2s;
+.btn-gold:hover {
+  background:#f1c46d;
+  transform:translateY(-3px);
 }
 
-.input-wrap input:focus {
-  border-color: #1765c1;
-  box-shadow: 0 0 0 3px rgba(23,101,193,.12);
+.btn-glass {
+  color:white;
+  border-color:rgba(255,255,255,.45);
+  background:rgba(255,255,255,.08);
 }
 
-.input-wrap input::placeholder {
-  color: #a3acb9;
+.btn-glass:hover {
+  background:rgba(255,255,255,.18);
 }
 
-.input-icon {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
-  color: #24384e;
-  font-size: 20px;
-  cursor: pointer;
+.hero-note {
+  margin-top:34px;
+  color:#bdcddd;
+  font-size:12px;
+  letter-spacing:.4px;
 }
 
-.options {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin: 5px 0 25px;
-  font-size: 13px;
+/* QUICK ACCESS */
+
+.quick-access {
+  position:relative;
+  z-index:5;
+  margin-top:-42px;
 }
 
-.remember {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #26384d;
+.quick-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  background:white;
+  border-radius:16px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  overflow:hidden;
 }
 
-.remember input {
-  width: 19px;
-  height: 19px;
-  accent-color: #1765c1;
+.quick-card {
+  padding:25px 20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  transition:.25s;
 }
 
-.options a {
-  color: #1765a8;
-  font-weight: 600;
-  text-decoration: none;
+.quick-card:not(:last-child) {
+  border-right:1px solid var(--border);
 }
 
-.login-btn {
-  width: 100%;
-  height: 59px;
-  background: #2876c9;
-  color: white;
-  border: none;
-  border-radius: 9px;
-  font-size: 17px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: .2s;
+.quick-card:hover {
+  background:var(--light-blue);
+  transform:translateY(-3px);
 }
 
-.login-btn:hover {
-  background: #155ca7;
+.quick-icon {
+  width:48px;
+  height:48px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  background:var(--light-blue);
+  border-radius:12px;
+  font-size:22px;
 }
 
-.login-btn:disabled {
-  opacity: .65;
-  cursor: not-allowed;
+.quick-card strong {
+  display:block;
+  color:var(--navy);
+  font-size:13px;
 }
 
-.message {
-  display: none;
-  padding: 12px;
-  margin-top: 17px;
-  border-radius: 9px;
-  text-align: center;
-  font-size: 13px;
-  overflow-wrap: anywhere;
+.quick-card small {
+  display:block;
+  color:var(--muted);
+  margin-top:5px;
+  font-size:11px;
 }
 
-.message.error {
-  display: block;
-  background: #feecec;
-  color: #a52626;
+/* GENERAL SECTIONS */
+
+section {
+  padding:95px 0;
 }
 
-.message.success {
-  display: block;
-  background: #e7f7ed;
-  color: #17683a;
+.section-heading {
+  max-width:650px;
+  margin:0 auto 48px;
+  text-align:center;
 }
 
-.register-note {
-  text-align: center;
-  margin-top: 25px;
-  color: #64748b;
-  font-size: 14px;
+.section-tag {
+  color:var(--blue);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
 }
 
-.register-note a {
-  color: #1765c1;
-  font-weight: 700;
-  text-decoration: none;
+.section-heading h2 {
+  margin:13px 0;
+  color:var(--navy);
+  font-family:Manrope,sans-serif;
+  font-size:clamp(28px,4vw,39px);
+  line-height:1.25;
 }
 
-.back-home {
-  display: block;
-  text-align: center;
-  margin-top: 22px;
-  color: #52677e;
-  font-size: 13px;
-  text-decoration: none;
+.section-heading p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+
+/* ABOUT */
+
+.about-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:65px;
+  align-items:center;
+}
+
+.about-image {
+  min-height:420px;
+  position:relative;
+  border-radius:18px;
+  background:
+    url("https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1100&q=85")
+    center/cover;
+  box-shadow:var(--shadow);
+}
+
+.image-label {
+  position:absolute;
+  right:-20px;
+  bottom:25px;
+  max-width:210px;
+  padding:20px;
+  border-radius:12px;
+  background:var(--navy);
+  color:white;
+  box-shadow:var(--shadow);
+}
+
+.image-label strong {
+  display:block;
+  color:var(--gold);
+  font-family:Manrope,sans-serif;
+  font-size:22px;
+}
+
+.image-label small {
+  display:block;
+  margin-top:5px;
+  color:#d4deeb;
+  line-height:1.5;
+}
+
+.about-content .section-tag {
+  display:block;
+  margin-bottom:13px;
+}
+
+.about-content h2 {
+  color:var(--navy);
+  font-family:Manrope,sans-serif;
+  font-size:35px;
+  line-height:1.3;
+  margin-bottom:19px;
+}
+
+.about-content p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.9;
+  margin-bottom:17px;
+}
+
+.about-points {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin:25px 0;
+}
+
+.about-point {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  color:var(--navy);
+  font-size:13px;
+  font-weight:700;
+}
+
+.check {
+  width:23px;
+  height:23px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border-radius:50%;
+  background:#e7f7ed;
+  color:#16834a;
+}
+
+/* FEATURES */
+
+.features-section {
+  background:var(--bg);
+}
+
+.feature-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.feature-card {
+  padding:30px;
+  background:white;
+  border:1px solid var(--border);
+  border-radius:15px;
+  transition:.3s;
+}
+
+.feature-card:hover {
+  transform:translateY(-7px);
+  box-shadow:var(--shadow);
+  border-color:#c6dcf7;
+}
+
+.feature-icon {
+  width:57px;
+  height:57px;
+  display:grid;
+  place-items:center;
+  background:var(--light-blue);
+  border-radius:14px;
+  font-size:26px;
+  margin-bottom:22px;
+}
+
+.feature-card h3 {
+  color:var(--navy);
+  font-family:Manrope,sans-serif;
+  font-size:17px;
+  margin-bottom:12px;
+}
+
+.feature-card p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+  min-height:70px;
+}
+
+.feature-link {
+  display:inline-block;
+  margin-top:20px;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:800;
+}
+
+.feature-link:hover {
+  color:var(--navy);
+}
+
+/* PORTALS */
+
+.portal-section {
+  background:var(--navy);
+  color:white;
+}
+
+.portal-section .section-heading h2 {
+  color:white;
+}
+
+.portal-section .section-heading p {
+  color:#bdccdc;
+}
+
+.portal-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.portal-card {
+  padding:32px;
+  border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);
+  border-radius:16px;
+  transition:.3s;
+}
+
+.portal-card:hover {
+  background:rgba(255,255,255,.12);
+  transform:translateY(-6px);
+}
+
+.portal-icon {
+  width:58px;
+  height:58px;
+  display:grid;
+  place-items:center;
+  background:rgba(229,173,66,.15);
+  border-radius:14px;
+  font-size:27px;
+  margin-bottom:23px;
+}
+
+.portal-card h3 {
+  font-family:Manrope,sans-serif;
+  font-size:20px;
+  margin-bottom:12px;
+}
+
+.portal-card p {
+  color:#bdccdc;
+  font-size:13px;
+  line-height:1.8;
+  min-height:70px;
+}
+
+.portal-card a {
+  display:inline-flex;
+  margin-top:23px;
+  color:var(--gold);
+  font-size:13px;
+  font-weight:800;
+}
+
+/* ADMISSIONS */
+
+.admissions {
+  background:#f7f9fc;
+}
+
+.admission-box {
+  display:grid;
+  grid-template-columns:1.3fr .7fr;
+  align-items:center;
+  gap:30px;
+  padding:55px;
+  border-radius:20px;
+  background:linear-gradient(115deg,#eaf3ff,#f4f7fc);
+  border:1px solid #dce8f7;
+}
+
+.admission-box h2 {
+  color:var(--navy);
+  font-family:Manrope,sans-serif;
+  font-size:31px;
+  margin-bottom:14px;
+}
+
+.admission-box p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+
+.admission-actions {
+  display:flex;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+/* ANNOUNCEMENTS */
+
+.announcement-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.announcement-card {
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  background:white;
+  transition:.25s;
+}
+
+.announcement-card:hover {
+  transform:translateY(-5px);
+  box-shadow:var(--shadow);
+}
+
+.announcement-image {
+  height:180px;
+  background:#eaf3ff center/cover no-repeat;
+}
+
+.announcement-body {
+  padding:23px;
+}
+
+.announcement-body small {
+  color:var(--blue);
+  font-weight:800;
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+.announcement-body h3 {
+  color:var(--navy);
+  font-family:Manrope,sans-serif;
+  font-size:17px;
+  margin:11px 0;
+}
+
+.announcement-body p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+}
+
+/* CTA */
+
+.cta {
+  padding:65px 0;
+  background:linear-gradient(110deg,#1765c1,#102747);
+  text-align:center;
+}
+
+.cta h2 {
+  color:white;
+  font-family:Manrope,sans-serif;
+  font-size:34px;
+  margin-bottom:14px;
+}
+
+.cta p {
+  max-width:600px;
+  margin:0 auto 25px;
+  color:#d9e8f9;
+  font-size:14px;
+  line-height:1.8;
+}
+
+/* FOOTER */
+
+footer {
+  background:var(--deep);
+  color:#c1cede;
+  padding:65px 0 22px;
+}
+
+.footer-grid {
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr 1fr;
+  gap:40px;
+  padding-bottom:45px;
+}
+
+.footer-brand p {
+  max-width:290px;
+  margin-top:18px;
+  color:#aab9cb;
+  font-size:13px;
+  line-height:1.9;
+}
+
+.footer-column h3 {
+  color:white;
+  font-size:14px;
+  margin-bottom:20px;
+}
+
+.footer-column a {
+  display:block;
+  margin-bottom:13px;
+  color:#aab9cb;
+  font-size:12px;
+  transition:.2s;
+}
+
+.footer-column a:hover {
+  color:var(--gold);
+  padding-left:4px;
+}
+
+.footer-bottom {
+  padding-top:22px;
+  border-top:1px solid rgba(255,255,255,.12);
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+  color:#8fa0b5;
+  font-size:11px;
+}
+
+/* BACK TO TOP */
+
+.back-top {
+  position:fixed;
+  z-index:900;
+  right:22px;
+  bottom:22px;
+  width:45px;
+  height:45px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:12px;
+  background:var(--blue);
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+  opacity:0;
+  visibility:hidden;
+  transform:translateY(10px);
+  transition:.25s;
+  box-shadow:var(--shadow);
+}
+
+.back-top.visible {
+  opacity:1;
+  visibility:visible;
+  transform:translateY(0);
+}
+
+/* ANIMATION */
+
+@keyframes appear {
+  from {opacity:0;transform:translateY(25px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+.reveal {
+  opacity:0;
+  transform:translateY(25px);
+  transition:.7s ease;
+}
+
+.reveal.show {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px) {
+  .nav-links {gap:15px}
+  .nav-links > a,.nav-menu-button {font-size:12px}
+  .quick-grid {grid-template-columns:repeat(2,1fr)}
+  .quick-card:nth-child(2) {border-right:0}
+  .quick-card:nth-child(-n+2) {border-bottom:1px solid var(--border)}
+  .footer-grid {grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:760px) {
+  .topbar-inner {justify-content:center}
+  .topbar-info {justify-content:center}
+  .navbar {height:72px}
+  .menu-toggle {display:block}
+  .nav-actions {margin-left:auto}
+  .nav-actions .btn {padding:11px 13px;font-size:11px}
+
+  .nav-links {
+    position:absolute;
+    top:72px;
+    left:0;
+    right:0;
+    display:none;
+    align-items:stretch;
+    flex-direction:column;
+    gap:0;
+    padding:12px 4%;
+    background:white;
+    border-top:1px solid var(--border);
+    box-shadow:var(--shadow);
+  }
+
+  .nav-links.active {display:flex}
+  .nav-links > a,.nav-menu-button {
+    display:block;
+    width:100%;
+    padding:14px 8px;
+    font-size:14px;
+    text-align:left;
+  }
+
+  .dropdown {
+    position:static;
+    display:none;
+    margin:0 0 8px 10px;
+    box-shadow:none;
+    border:0;
+    background:var(--bg);
+  }
+
+  .nav-menu.open .dropdown {display:block}
+  .hero {min-height:570px}
+  .hero-content {padding:75px 0}
+  .hero h1 {letter-spacing:-1px}
+  .about-grid {grid-template-columns:1fr;gap:45px}
+  .about-image {min-height:330px;margin-right:15px}
+  .feature-grid,.portal-grid,.announcement-grid {grid-template-columns:repeat(2,1fr)}
+  .admission-box {grid-template-columns:1fr;padding:35px}
+  .admission-actions {justify-content:flex-start}
 }
 
 @media(max-width:520px) {
-  body {
-    padding: 17px;
-    background-attachment: scroll;
-  }
-
-  .login-card {
-    padding: 33px 22px;
-    border-radius: 23px;
-  }
-
-  h1 {
-    font-size: 25px;
-  }
+  .topbar {font-size:10px}
+  .topbar-info {gap:10px}
+  .brand-name strong {font-size:14px}
+  .brand-name small {font-size:8px}
+  .brand-logo {width:42px;height:42px}
+  .nav-actions .btn {display:none}
+  .hero {min-height:570px}
+  .hero h1 {font-size:41px}
+  .hero-description {font-size:14px}
+  .hero-buttons .btn {width:100%}
+  .quick-grid {grid-template-columns:1fr}
+  .quick-card {padding:18px}
+  .quick-card:not(:last-child) {border-right:0;border-bottom:1px solid var(--border)}
+  section {padding:70px 0}
+  .feature-grid,.portal-grid,.announcement-grid {grid-template-columns:1fr}
+  .feature-card,.portal-card {padding:25px}
+  .about-content h2 {font-size:29px}
+  .about-points {grid-template-columns:1fr}
+  .image-label {right:-10px}
+  .admission-box {padding:27px 22px}
+  .admission-box h2 {font-size:26px}
+  .admission-actions .btn {width:100%}
+  .cta h2 {font-size:27px}
+  .footer-grid {grid-template-columns:1fr;gap:30px}
+  .footer-bottom {flex-direction:column}
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-card">
-
-  <div class="school-brand">
-    <div class="brand-icon">B</div>
-    <h2>BULCHANA SCHOOL</h2>
-    <p>STUDENT MANAGEMENT SYSTEM</p>
+<div class="topbar">
+  <div class="container topbar-inner">
+    <div>🎓 Welcome to Bulchana School</div>
+    <div class="topbar-info">
+      <span>📚 Education • Technology • Innovation</span>
+      <a href="contact.html">Contact the School ↗</a>
+    </div>
   </div>
-
-  <h1>Welcome Back</h1>
-
-  <form id="loginForm">
-
-    <div class="field">
-      <label for="email">Email Address</label>
-      <div class="input-wrap">
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email address"
-          autocomplete="username"
-          required
-        >
-        <span class="input-icon">👤</span>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="password">Password</label>
-      <div class="input-wrap">
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter your password"
-          autocomplete="current-password"
-          required
-        >
-        <button
-          type="button"
-          class="input-icon"
-          id="togglePassword"
-          aria-label="Show password"
-        >◉</button>
-      </div>
-    </div>
-
-    <div class="options">
-      <label class="remember">
-        <input type="checkbox" id="remember">
-        Remember me
-      </label>
-
-      <a href="#" id="forgotPassword">Forgot password?</a>
-    </div>
-
-    <button type="submit" class="login-btn" id="loginButton">
-      Login
-    </button>
-
-    <div class="message" id="message"></div>
-
-  </form>
-
-  <div class="register-note">
-    New student?
-    <a href="register.html">Register here</a>
-  </div>
-
-  <a href="index.html" class="back-home">← Back to Home</a>
-
 </div>
 
+<header>
+  <div class="container navbar">
+
+    <a href="index.html" class="brand">
+      <div class="brand-logo">B</div>
+      <div class="brand-name">
+        <strong>BULCHANA SCHOOL</strong>
+        <small>LEARN · GROW · SUCCEED</small>
+      </div>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+
+      <div class="nav-menu" id="aboutMenu">
+        <button class="nav-menu-button" type="button">About ▾</button>
+        <div class="dropdown">
+          <a href="about.html">About Our School</a>
+          <a href="about.html#mission">Our Mission & Vision</a>
+          <a href="about.html#leadership">School Leadership</a>
+        </div>
+      </div>
+
+      <div class="nav-menu" id="academicMenu">
+        <button class="nav-menu-button" type="button">Academics ▾</button>
+        <div class="dropdown">
+          <a href="academics.html">Academic Programs</a>
+          <a href="academics.html#grades">Grades 9–12</a>
+          <a href="academics.html#subjects">Subjects & Learning</a>
+        </div>
+      </div>
+
+      <a href="admissions.html">Admissions</a>
+      <a href="announcements.html">News</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="login.html" class="btn btn-outline">Sign In</a>
+      <a href="register.html" class="btn btn-primary">Register ↗</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu">☰</button>
+    </div>
+
+  </div>
+</header>
+
+<main>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="eyebrow"><span></span> Welcome to Bulchana School</div>
+
+      <h1>Building Minds.<br>Creating <em>Futures.</em></h1>
+
+      <p class="hero-description">
+        Empowering students through quality education, modern technology,
+        creativity and innovation. Discover a learning environment where
+        knowledge becomes opportunity.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="about.html" class="btn btn-gold">Discover Our School →</a>
+        <a href="register.html" class="btn btn-glass">Start Registration ↗</a>
+      </div>
+
+      <div class="hero-note">
+        EMPOWERING STUDENTS THROUGH TECHNOLOGY.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUICK ACCESS -->
+
+<div class="container quick-access">
+  <div class="quick-grid">
+
+    <a href="login.html" class="quick-card">
+      <div class="quick-icon">🎓</div>
+      <div>
+        <strong>Student Portal</strong>
+        <small>Access your student account</small>
+      </div>
+    </a>
+
+    <a href="login.html" class="quick-card">
+      <div class="quick-icon">👨‍🏫</div>
+      <div>
+        <strong>Teacher Portal</strong>
+        <small>Access teaching tools</small>
+      </div>
+    </a>
+
+    <a href="login.html" class="quick-card">
+      <div class="quick-icon">🛡️</div>
+      <div>
+        <strong>Administration</strong>
+        <small>Authorized admin access</small>
+      </div>
+    </a>
+
+    <a href="admissions.html" class="quick-card">
+      <div class="quick-icon">📝</div>
+      <div>
+        <strong>New Admissions</strong>
+        <small>Explore student registration</small>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ABOUT -->
+
+<section id="about">
+  <div class="container about-grid">
+
+    <div class="about-image reveal">
+      <div class="image-label">
+        <strong>Our Future</strong>
+        <small>Knowledge, character and innovation for tomorrow.</small>
+      </div>
+    </div>
+
+    <div class="about-content reveal">
+      <span class="section-tag">Who We Are</span>
+      <h2>Education That Opens Doors to a Better Future.</h2>
+
+      <p>
+        Bulchana School is committed to supporting students as they develop
+        knowledge, practical skills, discipline and confidence.
+      </p>
+
+      <p>
+        We believe education should prepare learners not only for examinations,
+        but also for real-life challenges and opportunities in a changing world.
+      </p>
+
+      <div class="about-points">
+        <div class="about-point"><span class="check">✓</span> Quality Education</div>
+        <div class="about-point"><span class="check">✓</span> Technology Integration</div>
+        <div class="about-point"><span class="check">✓</span> Student Development</div>
+        <div class="about-point"><span class="check">✓</span> Future Readiness</div>
+      </div>
+
+      <a href="about.html" class="btn btn-primary">Learn More About Us →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURES -->
+
+<section class="features-section" id="features">
+  <div class="container">
+
+    <div class="section-heading reveal">
+      <span class="section-tag">Explore Bulchana</span>
+      <h2>Everything That Makes Learning Better</h2>
+      <p>
+        Explore our academic programs, digital learning environment
+        and student-focused school services.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">📖</div>
+        <h3>Academic Programs</h3>
+        <p>Explore our high school learning programs, grade levels and subject areas.</p>
+        <a href="academics.html" class="feature-link">Explore Academics →</a>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">💻</div>
+        <h3>Digital Learning</h3>
+        <p>Discover how technology can support teaching, learning and student development.</p>
+        <a href="digital-learning.html" class="feature-link">Explore Digital Learning →</a>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <h3>Academic Results</h3>
+        <p>Students can access their academic information through their authorized portal.</p>
+        <a href="login.html" class="feature-link">Access Student Portal →</a>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">📝</div>
+        <h3>Student Admissions</h3>
+        <p>Learn about the admission process and begin your student registration.</p>
+        <a href="admissions.html" class="feature-link">View Admissions →</a>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">🏆</div>
+        <h3>Student Development</h3>
+        <p>Encouraging creativity, responsibility, practical knowledge and personal growth.</p>
+        <a href="student-life.html" class="feature-link">Discover Student Life →</a>
+      </article>
+
+      <article class="feature-card reveal">
+        <div class="feature-icon">📢</div>
+        <h3>News & Announcements</h3>
+        <p>Stay connected with school updates, announcements and important information.</p>
+        <a href="announcements.html" class="feature-link">View Updates →</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- PORTALS -->
+
+<section class="portal-section">
+  <div class="container">
+
+    <div class="section-heading reveal">
+      <span class="section-tag" style="color:#e5ad42">Digital School Experience</span>
+      <h2>One School. Three Dedicated Portals.</h2>
+      <p>Secure, role-based access designed for the different members of our school community.</p>
+    </div>
+
+    <div class="portal-grid">
+
+      <article class="portal-card reveal">
+        <div class="portal-icon">🎓</div>
+        <h3>Student Portal</h3>
+        <p>Access your student dashboard, academic results, enrollment information and school records.</p>
+        <a href="login.html">Student Sign In →</a>
+      </article>
+
+      <article class="portal-card reveal">
+        <div class="portal-icon">👨‍🏫</div>
+        <h3>Teacher Portal</h3>
+        <p>Access assigned classes, subjects, student records and academic mark-sheet tools.</p>
+        <a href="login.html">Teacher Sign In →</a>
+      </article>
+
+      <article class="portal-card reveal">
+        <div class="portal-icon">🛡️</div>
+        <h3>Admin Portal</h3>
+        <p>Authorized school administrators can manage school operations and system information.</p>
+        <a href="login.html">Administrator Sign In →</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ADMISSIONS -->
+
+<section class="admissions">
+  <div class="container">
+    <div class="admission-box reveal">
+      <div>
+        <span class="section-tag">Admissions</span>
+        <h2>Your Journey Starts Here.</h2>
+        <p>
+          Interested in joining Bulchana School? Explore the admissions
+          information and follow the student registration process.
+        </p>
+      </div>
+
+      <div class="admission-actions">
+        <a href="admissions.html" class="btn btn-outline">Admission Details</a>
+        <a href="register.html" class="btn btn-primary">Register Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANNOUNCEMENTS -->
+
+<section>
+  <div class="container">
+
+    <div class="section-heading reveal">
+      <span class="section-tag">Stay Connected</span>
+      <h2>School News & Updates</h2>
+      <p>Keep up with important school information and announcements.</p>
+    </div>
+
+    <div class="announcement-grid">
+
+      <article class="announcement-card reveal">
+        <div class="announcement-image"
+          style="background-image:url('https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=800&q=80')">
+        </div>
+        <div class="announcement-body">
+          <small>SCHOOL INFORMATION</small>
+          <h3>Welcome to Bulchana School</h3>
+          <p>Explore our school website and discover the learning opportunities and services available.</p>
+        </div>
+      </article>
+
+      <article class="announcement-card reveal">
+        <div class="announcement-image"
+          style="background-image:url('https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80')">
+        </div>
+        <div class="announcement-body">
+          <small>LEARNING</small>
+          <h3>Learning Through Technology</h3>
+          <p>Discover the role of digital tools in supporting modern education and learning.</p>
+        </div>
+      </article>
+
+      <article class="announcement-card reveal">
+        <div class="announcement-image"
+          style="background-image:url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80')">
+        </div>
+        <div class="announcement-body">
+          <small>ADMISSIONS</small>
+          <h3>Explore Student Admissions</h3>
+          <p>Visit the admissions section to learn about the registration process.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <div style="text-align:center;margin-top:35px">
+      <a href="announcements.html" class="btn btn-outline">View All Updates →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA -->
+
+<section class="cta">
+  <div class="container reveal">
+    <h2>Be Part of the Bulchana Community.</h2>
+    <p>
+      Education, innovation and opportunity begin with a single step.
+      Discover our school and take that step today.
+    </p>
+    <a href="register.html" class="btn btn-gold">Begin Registration →</a>
+    <a href="contact.html" class="btn btn-glass" style="margin-left:8px">Contact Us</a>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <div class="brand-logo">B</div>
+          <div class="brand-name">
+            <strong style="color:white">BULCHANA SCHOOL</strong>
+            <small style="color:#aab9cb">LEARN · GROW · SUCCEED</small>
+          </div>
+        </a>
+
+        <p>
+          Empowering Students Through Technology.
+          Building a future through education, knowledge and innovation.
+        </p>
+      </div>
+
+      <div class="footer-column">
+        <h3>Explore</h3>
+        <a href="about.html">About Our School</a>
+        <a href="academics.html">Academics</a>
+        <a href="student-life.html">Student Life</a>
+        <a href="announcements.html">News & Updates</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <a href="admissions.html">Admissions</a>
+        <a href="register.html">Student Registration</a>
+        <a href="login.html">Student Portal</a>
+        <a href="login.html">Teacher Portal</a>
+      </div>
+
+      <div class="footer-column">
+        <h3>Information</h3>
+        <a href="contact.html">Contact Us</a>
+        <a href="digital-learning.html">Digital Learning</a>
+        <a href="login.html">Administration</a>
+        <a href="contact.html">Help & Support</a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> Bulchana School. All rights reserved.</span>
+      <span>IT Department | Technology | Innovation</span>
+    </div>
+
+  </div>
+</footer>
+
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
+
 <script>
-const form = document.getElementById("loginForm");
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const loginButton = document.getElementById("loginButton");
-const message = document.getElementById("message");
+// MOBILE NAVIGATION
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
 
-function showMessage(text, type) {
-  message.textContent = text;
-  message.className = "message " + type;
-}
-
-document.getElementById("togglePassword").addEventListener("click", function() {
-  const showing = passwordInput.type === "text";
-  passwordInput.type = showing ? "password" : "text";
-  this.textContent = showing ? "◉" : "◎";
-  this.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+menuToggle.addEventListener("click", () => {
+  navLinks.classList.toggle("active");
+  menuToggle.textContent = navLinks.classList.contains("active") ? "✕" : "☰";
 });
 
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-
-  loginButton.disabled = true;
-  loginButton.textContent = "Signing in...";
-  message.className = "message";
-
-  try {
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if (error) throw error;
-
-    const { data: profile, error: profileError } = await supabaseClient
-      .from("user_profiles")
-      .select("role")
-      .eq("user_id", data.user.id)
-      .single();
-
-    if (profileError || !profile) {
-      throw new Error("Your school account profile was not found. Contact the school administrator.");
-    }
-
-    const role = String(profile.role).toLowerCase().trim();
-
-    const dashboards = {
-      admin: "admin/dashboard.html",
-      teacher: "teacher/dashboard.html",
-      student: "student/dashboard.html"
-    };
-
-    if (!dashboards[role]) {
-      throw new Error("Your account does not have a recognized school role.");
-    }
-
-    showMessage("Login successful. Opening your portal...", "success");
-
-    window.location.href = dashboards[role];
-
-  } catch (error) {
-    showMessage(error.message || "Login failed. Please try again.", "error");
-
-    await supabaseClient.auth.signOut();
-
-    loginButton.disabled = false;
-    loginButton.textContent = "Login";
-  }
+// MOBILE DROPDOWNS
+document.querySelectorAll(".nav-menu-button").forEach(button => {
+  button.addEventListener("click", () => {
+    const parent = button.closest(".nav-menu");
+    parent.classList.toggle("open");
+  });
 });
 
-document.getElementById("forgotPassword").addEventListener("click", async function(event) {
-  event.preventDefault();
+// CLOSE MENU AFTER NAVIGATION
+document.querySelectorAll(".nav-links a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("active");
+    menuToggle.textContent = "☰";
+  });
+});
 
-  const email = emailInput.value.trim();
+// FOOTER YEAR
+document.getElementById("year").textContent = new Date().getFullYear();
 
-  if (!email) {
-    showMessage("Enter your email address first, then tap Forgot password.", "error");
-    emailInput.focus();
-    return;
-  }
+// BACK TO TOP
+const backTop = document.getElementById("backTop");
 
-  try {
-    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo: window.location.origin +
-        window.location.pathname.replace(/login\.html$/, "reset-password.html")
-    });
+window.addEventListener("scroll", () => {
+  backTop.classList.toggle("visible", window.scrollY > 450);
+});
 
-    if (error) throw error;
+backTop.addEventListener("click", () => {
+  window.scrollTo({top:0,behavior:"smooth"});
+});
 
-    showMessage("If password recovery is enabled for your account, check your email for the reset link.", "success");
+// SCROLL REVEAL ANIMATION
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold:0.12});
 
-  } catch (error) {
-    showMessage(error.message || "Could not send the password reset email.", "error");
-  }
+document.querySelectorAll(".reveal").forEach(element => {
+  observer.observe(element);
 });
 </script>
 
