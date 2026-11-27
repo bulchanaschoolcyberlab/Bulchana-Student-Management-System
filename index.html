@@ -2,775 +2,422 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#102747">
-  <meta name="description" content="Bulchana School Student Management System. Empowering students through technology.">
-  <title>Bulchana School | Student Management System</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --navy: #102747;
-      --navy-dark: #091a30;
-      --blue: #1765c1;
-      --gold: #e5ad42;
-      --white: #ffffff;
-      --light: #f4f7fb;
-      --muted: #64748b;
-      --border: #e5eaf1;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      color: var(--navy);
-      background: var(--white);
-      line-height: 1.6;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    button {
-      font: inherit;
-    }
-
-    .container {
-      width: min(1160px, 90%);
-      margin: auto;
-    }
-
-    /* NAVIGATION */
-
-    header {
-      background: rgba(255,255,255,.97);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .navbar {
-      min-height: 82px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 25px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-icon {
-      width: 48px;
-      height: 48px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      background: var(--navy);
-      color: var(--gold);
-      font-family: 'Manrope', sans-serif;
-      font-weight: 800;
-      font-size: 22px;
-    }
-
-    .brand-name {
-      font-family: 'Manrope', sans-serif;
-      font-weight: 800;
-      font-size: 17px;
-      line-height: 1.2;
-    }
-
-    .brand-subtitle {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #475569;
-    }
-
-    .nav-links a:hover {
-      color: var(--blue);
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px 21px;
-      border-radius: 9px;
-      font-size: 14px;
-      font-weight: 700;
-      transition: .2s;
-      cursor: pointer;
-      border: 1px solid transparent;
-    }
-
-    .btn-primary {
-      background: var(--blue);
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background: #104b91;
-      transform: translateY(-2px);
-    }
-
-    .btn-outline {
-      border-color: var(--border);
-      color: var(--navy);
-      background: white;
-    }
-
-    .btn-outline:hover {
-      border-color: var(--blue);
-      color: var(--blue);
-    }
-
-    .menu-button {
-      display: none;
-      border: 0;
-      background: transparent;
-      color: var(--navy);
-      font-size: 27px;
-      cursor: pointer;
-    }
-
-    /* HERO */
-
-    .hero {
-      background:
-        radial-gradient(circle at 85% 20%, rgba(229,173,66,.16), transparent 28%),
-        linear-gradient(125deg, #091a30 0%, #102747 60%, #173d69 100%);
-      color: white;
-      padding: 105px 0 110px;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      width: 430px;
-      height: 430px;
-      border: 1px solid rgba(255,255,255,.09);
-      border-radius: 50%;
-      right: -130px;
-      bottom: -250px;
-    }
-
-    .hero-content {
-      max-width: 760px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--gold);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 28px;
-      height: 2px;
-      background: var(--gold);
-    }
-
-    .hero h1 {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(38px, 6vw, 65px);
-      line-height: 1.12;
-      letter-spacing: -2px;
-      font-weight: 800;
-      margin-bottom: 23px;
-    }
-
-    .hero h1 span {
-      color: var(--gold);
-    }
-
-    .hero-description {
-      max-width: 590px;
-      color: #d0dbea;
-      font-size: 17px;
-      line-height: 1.8;
-      margin-bottom: 33px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 13px;
-    }
-
-    .hero .btn-primary {
-      background: var(--gold);
-      color: var(--navy-dark);
-    }
-
-    .hero .btn-primary:hover {
-      background: #f2c66f;
-    }
-
-    .hero .btn-outline {
-      background: transparent;
-      border-color: rgba(255,255,255,.35);
-      color: white;
-    }
-
-    .hero .btn-outline:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    .hero-note {
-      margin-top: 45px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #b9c9dc;
-      font-size: 13px;
-    }
-
-    .hero-note span {
-      color: var(--gold);
-      font-size: 18px;
-    }
-
-    /* INTRODUCTION */
-
-    .intro {
-      padding: 90px 0;
-      text-align: center;
-    }
-
-    .section-label {
-      color: var(--blue);
-      font-size: 12px;
-      letter-spacing: 2px;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-bottom: 13px;
-    }
-
-    .section-title {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(27px, 4vw, 39px);
-      line-height: 1.25;
-      margin-bottom: 18px;
-      letter-spacing: -1px;
-    }
-
-    .section-description {
-      max-width: 680px;
-      margin: auto;
-      color: var(--muted);
-      font-size: 16px;
-    }
-
-    /* FEATURES */
-
-    .features {
-      background: var(--light);
-      padding: 85px 0;
-    }
-
-    .features-heading {
-      text-align: center;
-      margin-bottom: 45px;
-    }
-
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .feature-card {
-      background: white;
-      padding: 30px 27px;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      transition: .25s;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-5px);
-      border-color: #b7cce5;
-      box-shadow: 0 15px 35px rgba(16,39,71,.07);
-    }
-
-    .feature-icon {
-      width: 52px;
-      height: 52px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: #edf4fd;
-      color: var(--blue);
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    .feature-card h3 {
-      font-family: 'Manrope', sans-serif;
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    .feature-card p {
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.8;
-    }
-
-    /* CALL TO ACTION */
-
-    .cta {
-      padding: 80px 0;
-      background: white;
-    }
-
-    .cta-inner {
-      background: var(--navy);
-      color: white;
-      padding: 55px 45px;
-      border-radius: 18px;
-      text-align: center;
-    }
-
-    .cta-inner h2 {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(26px, 4vw, 36px);
-      margin-bottom: 13px;
-    }
-
-    .cta-inner p {
-      color: #c7d4e3;
-      margin-bottom: 25px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      background: var(--navy-dark);
-      color: white;
-      padding: 55px 0 22px;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 45px;
-      padding-bottom: 40px;
-    }
-
-    .footer-about p {
-      color: #aebdd0;
-      font-size: 14px;
-      max-width: 360px;
-      margin-top: 17px;
-      line-height: 1.8;
-    }
-
-    .footer-column h4 {
-      color: var(--gold);
-      margin-bottom: 17px;
-      font-size: 14px;
-    }
-
-    .footer-column a {
-      display: block;
-      color: #b9c8d9;
-      font-size: 14px;
-      margin-bottom: 11px;
-    }
-
-    .footer-column a:hover {
-      color: white;
-    }
-
-    .copyright {
-      border-top: 1px solid rgba(255,255,255,.12);
-      padding-top: 20px;
-      color: #8fa1b7;
-      font-size: 12px;
-      text-align: center;
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 800px) {
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 82px;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 22px 5%;
-        border-bottom: 1px solid var(--border);
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 19px;
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .menu-button {
-        display: block;
-      }
-
-      .nav-actions .btn-outline {
-        display: none;
-      }
-
-      .navbar {
-        min-height: 72px;
-      }
-
-      .hero {
-        padding: 80px 0;
-      }
-
-      .feature-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .footer-about {
-        grid-column: 1 / -1;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .brand-name {
-        font-size: 14px;
-      }
-
-      .brand-subtitle {
-        font-size: 9px;
-      }
-
-      .brand-icon {
-        width: 42px;
-        height: 42px;
-      }
-
-      .nav-actions .btn-primary {
-        padding: 10px 13px;
-        font-size: 12px;
-      }
-
-      .hero {
-        padding: 72px 0;
-      }
-
-      .hero h1 {
-        letter-spacing: -1.3px;
-      }
-
-      .hero-description {
-        font-size: 15px;
-      }
-
-      .hero-buttons .btn {
-        width: 100%;
-      }
-
-      .feature-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .intro, .features {
-        padding: 65px 0;
-      }
-
-      .cta-inner {
-        padding: 40px 22px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 25px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102747">
+<title>Sign In | Bulchana School</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  background:
+    linear-gradient(rgba(8,25,47,.28), rgba(8,25,47,.48)),
+    url("https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1600&q=85")
+    center/cover no-repeat fixed;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 510px;
+  padding: 43px 40px;
+  background: rgba(255,255,255,.91);
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 27px;
+  box-shadow: 0 25px 70px rgba(0,0,0,.22);
+}
+
+.school-brand {
+  text-align: center;
+  margin-bottom: 27px;
+}
+
+.brand-icon {
+  width: 53px;
+  height: 53px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 12px;
+  background: #102747;
+  color: #e5ad42;
+  border-radius: 15px;
+  font-family: Manrope, sans-serif;
+  font-size: 27px;
+  font-weight: 800;
+}
+
+.school-brand h2 {
+  color: #102747;
+  font-family: Manrope, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.school-brand p {
+  color: #64748b;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-top: 4px;
+}
+
+h1 {
+  color: #102747;
+  font-family: Manrope, sans-serif;
+  font-size: 29px;
+  text-align: center;
+  margin-bottom: 29px;
+}
+
+.field {
+  margin-bottom: 22px;
+}
+
+.field label {
+  display: block;
+  color: #172b42;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 9px;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap input {
+  width: 100%;
+  height: 59px;
+  padding: 0 48px 0 16px;
+  border: 1px solid #d5dce5;
+  border-radius: 11px;
+  background: rgba(255,255,255,.95);
+  font-size: 15px;
+  color: #102747;
+  outline: none;
+  transition: .2s;
+}
+
+.input-wrap input:focus {
+  border-color: #1765c1;
+  box-shadow: 0 0 0 3px rgba(23,101,193,.12);
+}
+
+.input-wrap input::placeholder {
+  color: #a3acb9;
+}
+
+.input-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: #24384e;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 5px 0 25px;
+  font-size: 13px;
+}
+
+.remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #26384d;
+}
+
+.remember input {
+  width: 19px;
+  height: 19px;
+  accent-color: #1765c1;
+}
+
+.options a {
+  color: #1765a8;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-btn {
+  width: 100%;
+  height: 59px;
+  background: #2876c9;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.login-btn:hover {
+  background: #155ca7;
+}
+
+.login-btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
+
+.message {
+  display: none;
+  padding: 12px;
+  margin-top: 17px;
+  border-radius: 9px;
+  text-align: center;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.message.error {
+  display: block;
+  background: #feecec;
+  color: #a52626;
+}
+
+.message.success {
+  display: block;
+  background: #e7f7ed;
+  color: #17683a;
+}
+
+.register-note {
+  text-align: center;
+  margin-top: 25px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.register-note a {
+  color: #1765c1;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.back-home {
+  display: block;
+  text-align: center;
+  margin-top: 22px;
+  color: #52677e;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+@media(max-width:520px) {
+  body {
+    padding: 17px;
+    background-attachment: scroll;
+  }
+
+  .login-card {
+    padding: 33px 22px;
+    border-radius: 23px;
+  }
+
+  h1 {
+    font-size: 25px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <div class="container navbar">
+<div class="login-card">
 
-    <a href="index.html" class="brand">
-      <div class="brand-icon">B</div>
-      <div>
-        <div class="brand-name">BULCHANA SCHOOL</div>
-        <div class="brand-subtitle">Student Management System</div>
-      </div>
-    </a>
-
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="#features">Our System</a>
-      <a href="contact.html">Contact</a>
-      <a href="register.html">Registration</a>
-    </nav>
-
-    <div class="nav-actions">
-      <a href="login.html" class="btn btn-outline">Sign In</a>
-      <a href="register.html" class="btn btn-primary">Get Started</a>
-      <button class="menu-button" id="menuButton" aria-label="Open menu">☰</button>
-    </div>
-
+  <div class="school-brand">
+    <div class="brand-icon">B</div>
+    <h2>BULCHANA SCHOOL</h2>
+    <p>STUDENT MANAGEMENT SYSTEM</p>
   </div>
-</header>
 
-<main>
+  <h1>Welcome Back</h1>
 
-  <section class="hero">
-    <div class="container">
-      <div class="hero-content">
+  <form id="loginForm">
 
-        <div class="eyebrow">Welcome to Bulchana School</div>
-
-        <h1>
-          Education Meets<br>
-          <span>Technology & Innovation.</span>
-        </h1>
-
-        <p class="hero-description">
-          A modern digital school management experience designed to
-          connect students, teachers, and school administration.
-          Making education more organized, accessible, and effective.
-        </p>
-
-        <div class="hero-buttons">
-          <a href="login.html" class="btn btn-primary">Access Your Portal →</a>
-          <a href="about.html" class="btn btn-outline">Discover Our School</a>
-        </div>
-
-        <div class="hero-note">
-          <span>✦</span>
-          Empowering Students Through Technology.
-        </div>
-
+    <div class="field">
+      <label for="email">Email Address</label>
+      <div class="input-wrap">
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your email address"
+          autocomplete="username"
+          required
+        >
+        <span class="input-icon">👤</span>
       </div>
     </div>
-  </section>
 
-  <section class="intro">
-    <div class="container">
-      <div class="section-label">Our Vision</div>
-
-      <h2 class="section-title">
-        Building a Smarter Learning Environment
-      </h2>
-
-      <p class="section-description">
-        We believe technology should support education, simplify
-        school management, and create better opportunities for
-        students and teachers.
-      </p>
-    </div>
-  </section>
-
-  <section class="features" id="features">
-    <div class="container">
-
-      <div class="features-heading">
-        <div class="section-label">Digital Education</div>
-        <h2 class="section-title">One School. One Connected System.</h2>
-        <p class="section-description">
-          Dedicated digital services for every member of our school community.
-        </p>
-      </div>
-
-      <div class="feature-grid">
-
-        <div class="feature-card">
-          <div class="feature-icon">🎓</div>
-          <h3>Student Portal</h3>
-          <p>
-            Access academic results, personal information,
-            enrollment details, and learning progress.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📚</div>
-          <h3>Teacher Portal</h3>
-          <p>
-            Manage assigned classes, access student records,
-            and submit academic marks.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">🏛️</div>
-          <h3>Administration</h3>
-          <p>
-            Authorized administrators manage school operations,
-            academic records, and student registration.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">📊</div>
-          <h3>Academic Results</h3>
-          <p>
-            Organized academic records and semester results
-            to support student progress tracking.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">💳</div>
-          <h3>Registration Payments</h3>
-          <p>
-            A structured registration payment process with
-            payment status and verification.
-          </p>
-        </div>
-
-        <div class="feature-card">
-          <div class="feature-icon">💡</div>
-          <h3>Technology & Innovation</h3>
-          <p>
-            Using digital tools to support teachers,
-            empower students, and improve education.
-          </p>
-        </div>
-
+    <div class="field">
+      <label for="password">Password</label>
+      <div class="input-wrap">
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        >
+        <button
+          type="button"
+          class="input-icon"
+          id="togglePassword"
+          aria-label="Show password"
+        >◉</button>
       </div>
     </div>
-  </section>
 
-  <section class="cta">
-    <div class="container">
-      <div class="cta-inner">
-        <h2>Welcome to the Digital School Experience</h2>
-        <p>
-          Sign in to access your dedicated school portal.
-        </p>
-        <a href="login.html" class="btn btn-primary">Enter Your Portal →</a>
-      </div>
-    </div>
-  </section>
+    <div class="options">
+      <label class="remember">
+        <input type="checkbox" id="remember">
+        Remember me
+      </label>
 
-</main>
-
-<footer>
-  <div class="container">
-
-    <div class="footer-grid">
-
-      <div class="footer-about">
-        <a href="index.html" class="brand">
-          <div class="brand-icon">B</div>
-          <div>
-            <div class="brand-name">BULCHANA SCHOOL</div>
-            <div class="brand-subtitle">Student Management System</div>
-          </div>
-        </a>
-
-        <p>
-          Empowering Students Through Technology.
-          Building a better learning environment through
-          education, technology, and innovation.
-        </p>
-      </div>
-
-      <div class="footer-column">
-        <h4>Quick Links</h4>
-        <a href="index.html">Home</a>
-        <a href="about.html">About Us</a>
-        <a href="contact.html">Contact</a>
-        <a href="register.html">Registration</a>
-      </div>
-
-      <div class="footer-column">
-        <h4>School Portals</h4>
-        <a href="login.html">Sign In</a>
-        <a href="login.html">Student Portal</a>
-        <a href="login.html">Teacher Portal</a>
-        <a href="login.html">Administration</a>
-      </div>
-
+      <a href="#" id="forgotPassword">Forgot password?</a>
     </div>
 
-    <div class="copyright">
-      © <span id="year"></span> Bulchana School.
-      IT Department | Technology | Innovation.
-    </div>
+    <button type="submit" class="login-btn" id="loginButton">
+      Login
+    </button>
 
+    <div class="message" id="message"></div>
+
+  </form>
+
+  <div class="register-note">
+    New student?
+    <a href="register.html">Register here</a>
   </div>
-</footer>
+
+  <a href="index.html" class="back-home">← Back to Home</a>
+
+</div>
 
 <script>
-  const menuButton = document.getElementById("menuButton");
-  const navLinks = document.getElementById("navLinks");
+const form = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const loginButton = document.getElementById("loginButton");
+const message = document.getElementById("message");
 
-  menuButton.addEventListener("click", function () {
-    navLinks.classList.toggle("open");
-  });
+function showMessage(text, type) {
+  message.textContent = text;
+  message.className = "message " + type;
+}
 
-  navLinks.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
-      navLinks.classList.remove("open");
+document.getElementById("togglePassword").addEventListener("click", function() {
+  const showing = passwordInput.type === "text";
+  passwordInput.type = showing ? "password" : "text";
+  this.textContent = showing ? "◉" : "◎";
+  this.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+});
+
+form.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
+
+  loginButton.disabled = true;
+  loginButton.textContent = "Signing in...";
+  message.className = "message";
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
     });
-  });
 
-  document.getElementById("year").textContent =
-    new Date().getFullYear();
+    if (error) throw error;
+
+    const { data: profile, error: profileError } = await supabaseClient
+      .from("user_profiles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .single();
+
+    if (profileError || !profile) {
+      throw new Error("Your school account profile was not found. Contact the school administrator.");
+    }
+
+    const role = String(profile.role).toLowerCase().trim();
+
+    const dashboards = {
+      admin: "admin/dashboard.html",
+      teacher: "teacher/dashboard.html",
+      student: "student/dashboard.html"
+    };
+
+    if (!dashboards[role]) {
+      throw new Error("Your account does not have a recognized school role.");
+    }
+
+    showMessage("Login successful. Opening your portal...", "success");
+
+    window.location.href = dashboards[role];
+
+  } catch (error) {
+    showMessage(error.message || "Login failed. Please try again.", "error");
+
+    await supabaseClient.auth.signOut();
+
+    loginButton.disabled = false;
+    loginButton.textContent = "Login";
+  }
+});
+
+document.getElementById("forgotPassword").addEventListener("click", async function(event) {
+  event.preventDefault();
+
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    showMessage("Enter your email address first, then tap Forgot password.", "error");
+    emailInput.focus();
+    return;
+  }
+
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin +
+        window.location.pathname.replace(/login\.html$/, "reset-password.html")
+    });
+
+    if (error) throw error;
+
+    showMessage("If password recovery is enabled for your account, check your email for the reset link.", "success");
+
+  } catch (error) {
+    showMessage(error.message || "Could not send the password reset email.", "error");
+  }
+});
 </script>
 
 </body>
