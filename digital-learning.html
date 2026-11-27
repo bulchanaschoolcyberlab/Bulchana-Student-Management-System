@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Learning | Bulchana School</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+ --navy:#102747;
+ --deep:#091a30;
+ --blue:#1765c1;
+ --gold:#e5ad42;
+ --light:#f4f7fb;
+ --white:#fff;
+ --text:#26364a;
+ --muted:#718096;
+ --border:#e4eaf2;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.7}
+h1,h2,h3{font-family:'Manrope',sans-serif;color:var(--navy);line-height:1.3}
+a{text-decoration:none;color:inherit}
+.container{width:min(1140px,92%);margin:auto}
+
+header{background:white;position:sticky;top:0;z-index:10;box-shadow:0 3px 18px #10274712}
+.nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:45px;height:45px;border-radius:12px;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-weight:800;font-size:20px}
+.brand-name{font-weight:800;color:var(--navy);font-size:17px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:1px}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:13px;font-weight:700;color:#34465d}
+.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.nav-links .login{background:var(--blue);color:white;padding:11px 17px;border-radius:8px}
+.menu-btn{display:none;border:0;background:var(--light);color:var(--navy);width:42px;height:42px;border-radius:9px;font-size:22px}
+
+.hero{
+ min-height:440px;
+ display:flex;
+ align-items:center;
+ color:white;
+ background:linear-gradient(90deg,rgba(7,24,46,.95),rgba(7,24,46,.65)),
+ url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85') center/cover;
+}
+.hero-content{padding:80px 0}
+.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.hero h1{color:white;font-size:clamp(38px,6vw,60px);max-width:750px;margin:18px 0}
+.hero p{color:#e1e9f3;max-width:650px;font-size:16px}
+.btn{display:inline-flex;padding:14px 23px;border-radius:8px;font-size:13px;font-weight:800;margin:25px 10px 0 0}
+.btn-primary{background:var(--gold);color:var(--deep)}
+.btn-outline{border:1px solid #ffffff85;color:white}
+
+section{padding:75px 0}
+.section-label{color:var(--blue);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
+.section-title{font-size:clamp(27px,4vw,38px);margin:12px 0}
+.section-desc{max-width:700px;color:var(--muted);font-size:15px}
+
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px;align-items:center}
+.intro-image{min-height:350px;border-radius:16px;background:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1000&q=85') center/cover}
+.intro-text p{color:var(--muted);margin-top:15px;font-size:14px}
+
+.learning-section{background:var(--light)}
+.learning-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:35px}
+.learning-card{background:white;border:1px solid var(--border);border-radius:14px;padding:27px;transition:.2s}
+.learning-card:hover{transform:translateY(-5px);box-shadow:0 12px 30px #10274710}
+.card-icon{width:52px;height:52px;border-radius:13px;background:#eaf2fc;display:grid;place-items:center;font-size:25px;margin-bottom:18px}
+.learning-card h3{font-size:18px;margin-bottom:10px}
+.learning-card p{font-size:13px;color:var(--muted)}
+
+.benefits-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:35px}
+.benefit{display:flex;gap:15px;padding:22px;border:1px solid var(--border);border-radius:12px}
+.benefit-icon{font-size:24px}
+.benefit h3{font-size:16px;margin-bottom:5px}
+.benefit p{font-size:13px;color:var(--muted)}
+
+.cta{background:var(--navy);color:white;text-align:center;padding:65px 20px}
+.cta h2{color:white;font-size:clamp(26px,4vw,36px);margin-bottom:13px}
+.cta p{color:#d2dfed;max-width:650px;margin:auto;font-size:14px}
+
+footer{background:var(--deep);color:#c9d5e3;padding:35px 0 20px}
+.footer-content{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand strong{color:white;font-size:17px}
+.footer-brand p{font-size:12px;color:#aebdce;margin-top:7px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:12px;color:#b8c7d8}
+.footer-links a:hover{color:var(--gold)}
+.footer-bottom{width:100%;border-top:1px solid #ffffff20;padding-top:18px;margin-top:20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#94a8bd}
+
+@media(max-width:850px){
+ .nav-links{display:none;position:absolute;top:78px;left:0;right:0;background:white;padding:20px 5%;box-shadow:0 12px 20px #10274715;flex-direction:column;align-items:stretch;gap:0}
+ .nav-links.show{display:flex}
+ .nav-links a{padding:12px 0}
+ .nav-links .login{text-align:center;margin-top:8px}
+ .menu-btn{display:block}
+ .intro-grid{grid-template-columns:1fr}
+ .learning-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:580px){
+ section{padding:55px 0}
+ .hero{min-height:390px}
+ .hero-content{padding:60px 0}
+ .learning-grid,.benefits-grid{grid-template-columns:1fr}
+ .intro-image{min-height:240px}
+ .footer-content{flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="container nav">
+  <a href="index.html" class="brand">
+   <div class="logo">B</div>
+   <div>
+    <div class="brand-name">BULCHANA SCHOOL</div>
+    <div class="brand-sub">EDUCATION FOR EXCELLENCE</div>
+   </div>
+  </a>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Open navigation">☰</button>
+
+  <nav class="nav-links" id="navLinks">
+   <a href="index.html">Home</a>
+   <a href="about.html">About</a>
+   <a href="academics.html">Academics</a>
+   <a href="admissions.html">Admissions</a>
+   <a href="announcements.html">News</a>
+   <a href="digital-learning.html" class="active">Digital Learning</a>
+   <a href="contact.html">Contact</a>
+   <a href="login.html" class="login">Sign In ↗</a>
+  </nav>
+ </div>
+</header>
+
+<main>
+
+<section class="hero">
+ <div class="container hero-content">
+  <span class="eyebrow">Technology Meets Education</span>
+  <h1>Learn Today. Build Tomorrow.</h1>
+  <p>Discover how digital skills, technology, and innovation can empower students to explore new opportunities and prepare for the future.</p>
+  <a href="#learning" class="btn btn-primary">Explore Learning ↓</a>
+  <a href="login.html" class="btn btn-outline">Student Portal ↗</a>
+ </div>
+</section>
+
+<section>
+ <div class="container intro-grid">
+  <div class="intro-image"></div>
+  <div class="intro-text">
+   <span class="section-label">Digital Education</span>
+   <h2 class="section-title">Preparing Students for a Digital World</h2>
+   <p>Technology is changing how people learn, communicate, create, and work. Digital education helps students understand these changes and develop skills for the modern world.</p>
+   <p>At Bulchana School, we believe technology should support learning, encourage creativity, and help students become confident problem-solvers.</p>
+  </div>
+ </div>
+</section>
+
+<section class="learning-section" id="learning">
+ <div class="container">
+  <span class="section-label">Explore Digital Skills</span>
+  <h2 class="section-title">What Can Students Learn?</h2>
+  <p class="section-desc">Explore important areas of technology and digital knowledge.</p>
+
+  <div class="learning-grid">
+
+   <div class="learning-card">
+    <div class="card-icon">💻</div>
+    <h3>Computer Basics</h3>
+    <p>Understand computer hardware, software, operating systems, files, and essential computer operations.</p>
+   </div>
+
+   <div class="learning-card">
+    <div class="card-icon">⌨️</div>
+    <h3>Programming</h3>
+    <p>Discover coding concepts, logical thinking, problem-solving, and how programs are created.</p>
+   </div>
+
+   <div class="learning-card">
+    <div class="card-icon">🌐</div>
+    <h3>Internet Skills</h3>
+    <p>Learn how the internet works, how to research information, and how to use online resources responsibly.</p>
+   </div>
+
+   <div class="learning-card">
+    <div class="card-icon">🔐</div>
+    <h3>Cyber Safety</h3>
+    <p>Understand passwords, privacy, online threats, responsible technology use, and digital protection.</p>
+   </div>
+
+   <div class="learning-card">
+    <div class="card-icon">🎨</div>
+    <h3>Digital Creativity</h3>
+    <p>Explore digital design, presentations, media creation, and ways to express ideas using technology.</p>
+   </div>
+
+   <div class="learning-card">
+    <div class="card-icon">🤖</div>
+    <h3>Emerging Technology</h3>
+    <p>Discover artificial intelligence, modern innovations, and how technology may shape future opportunities.</p>
+   </div>
+
+  </div>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <span class="section-label">Why Digital Skills Matter</span>
+  <h2 class="section-title">Building Skills Beyond the Classroom</h2>
+  <p class="section-desc">Digital knowledge can help students become independent learners and responsible technology users.</p>
+
+  <div class="benefits-grid">
+
+   <div class="benefit">
+    <div class="benefit-icon">🧠</div>
+    <div>
+     <h3>Critical Thinking</h3>
+     <p>Develop the ability to analyze information and solve problems logically.</p>
+    </div>
+   </div>
+
+   <div class="benefit">
+    <div class="benefit-icon">🚀</div>
+    <div>
+     <h3>Future Opportunities</h3>
+     <p>Build useful skills that can support future education and career paths.</p>
+    </div>
+   </div>
+
+   <div class="benefit">
+    <div class="benefit-icon">🤝</div>
+    <div>
+     <h3>Collaboration</h3>
+     <p>Use digital tools to communicate, share ideas, and work with others.</p>
+    </div>
+   </div>
+
+   <div class="benefit">
+    <div class="benefit-icon">🛡️</div>
+    <div>
+     <h3>Responsible Use</h3>
+     <p>Make safer and more informed decisions when using digital platforms.</p>
+    </div>
+   </div>
+
+  </div>
+ </div>
+</section>
+
+<section class="cta">
+ <div class="container">
+  <h2>Technology Should Empower Learning</h2>
+  <p>Our goal is to use technology as a learning partner — supporting teachers, inspiring students, and opening doors to new possibilities.</p>
+  <a href="academics.html" class="btn btn-primary">Explore Academics →</a>
+  <a href="contact.html" class="btn btn-outline">Contact Us →</a>
+ </div>
+</section>
+
+</main>
+
+<footer>
+ <div class="container footer-content">
+  <div class="footer-brand">
+   <strong>BULCHANA SCHOOL</strong>
+   <p>Empowering Students Through Technology.</p>
+  </div>
+
+  <div class="footer-links">
+   <a href="index.html">Home</a>
+   <a href="about.html">About</a>
+   <a href="academics.html">Academics</a>
+   <a href="contact.html">Contact</a>
+  </div>
+
+  <div class="footer-bottom">
+   <span>© <span id="year"></span> Bulchana School. All rights reserved.</span>
+   <span>IT Department | Technology | Innovation</span>
+  </div>
+ </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById("menuBtn");
+const navLinks = document.getElementById("navLinks");
+
+menuBtn.addEventListener("click", function(){
+ const isOpen = navLinks.classList.toggle("show");
+ menuBtn.setAttribute("aria-expanded", String(isOpen));
+ menuBtn.textContent = isOpen ? "✕" : "☰";
+});
+
+navLinks.querySelectorAll("a").forEach(function(link){
+ link.addEventListener("click", function(){
+  navLinks.classList.remove("show");
+  menuBtn.setAttribute("aria-expanded", "false");
+  menuBtn.textContent = "☰";
+ });
+});
+
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
