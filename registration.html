@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Registration | Bulchana School</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:25px 12px;background:#f1f5f9;font-family:Arial,sans-serif;color:#172554}
+.board{max-width:850px;margin:auto;background:white;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px #0001}
+header{background:#123b78;color:white;text-align:center;padding:30px}
+header h1{margin:0 0 8px}
+header p{margin:0;color:#dbeafe}
+.content{padding:28px}
+section{margin-bottom:28px}
+h2{font-size:18px;color:#123b78;border-bottom:1px solid #e2e8f0;padding-bottom:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.field{margin:12px 0}
+.full{grid-column:1/-1}
+label{display:block;font-weight:bold;font-size:14px;margin-bottom:7px}
+input,select,textarea{width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px}
+textarea{min-height:85px}
+input:focus,select:focus,textarea:focus{outline:2px solid #bfdbfe;border-color:#2563eb}
+.payment{background:#eff6ff;padding:17px;border-radius:10px;line-height:1.9;overflow-wrap:anywhere}
+.notice{background:#fff7ed;color:#9a3412;padding:14px;border-radius:9px;font-size:13px;line-height:1.6;margin:15px 0}
+button{width:100%;padding:15px;border:0;border-radius:9px;background:#1d4ed8;color:white;font-size:16px;font-weight:bold}
+button:disabled{opacity:.6}
+#message{display:none;padding:14px;border-radius:9px;margin-top:15px;line-height:1.5;overflow-wrap:anywhere}
+.error{display:block!important;background:#fee2e2;color:#991b1b}
+.success{display:block!important;background:#dcfce7;color:#166534}
+footer{text-align:center;padding:20px;color:#94a3b8;font-size:12px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.content{padding:19px}}
+</style>
+</head>
+
+<body>
+<div class="board">
+<header>
+<h1>Bulchana School</h1>
+<p>Student Registration Portal</p>
+</header>
+
+<div class="content">
+<form id="registrationForm">
+
+<section>
+<h2>01 — Personal Information</h2>
+<div class="grid">
+<div class="field">
+<label>First Name *</label>
+<input id="first_name" required>
+</div>
+<div class="field">
+<label>Middle Name *</label>
+<input id="middle_name" required>
+</div>
+<div class="field">
+<label>Last Name *</label>
+<input id="last_name" required>
+</div>
+<div class="field">
+<label>Date of Birth *</label>
+<input id="date_of_birth" type="date" required>
+</div>
+<div class="field">
+<label>Gender *</label>
+<select id="gender" required>
+<option value="">Select gender</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+</div>
+<div class="field">
+<label>Phone Number *</label>
+<input id="phone_number" type="tel" required>
+</div>
+<div class="field full">
+<label>Home Address *</label>
+<textarea id="address" required></textarea>
+</div>
+</div>
+</section>
+
+<section>
+<h2>02 — Academic Information</h2>
+<div class="grid">
+<div class="field">
+<label>Applying Grade *</label>
+<select id="current_grade" required>
+<option value="">Choose grade</option>
+<option value="Grade 9">Grade 9</option>
+<option value="Grade 10">Grade 10</option>
+<option value="Grade 11">Grade 11</option>
+<option value="Grade 12">Grade 12</option>
+</select>
+</div>
+<div class="field" id="streamBox" style="display:none">
+<label>Preferred Stream</label>
+<select id="stream">
+<option value="">Choose stream</option>
+<option value="Natural Science">Natural Science</option>
+<option value="Social Science">Social Science</option>
+</select>
+</div>
+</div>
+</section>
+
+<section>
+<h2>03 — Student Account</h2>
+<div class="grid">
+<div class="field">
+<label>Email Address *</label>
+<input id="email" type="email" required>
+</div>
+<div class="field">
+<label>Password *</label>
+<input id="password" type="password" minlength="8" required>
+</div>
+<div class="field full">
+<label>Confirm Password *</label>
+<input id="confirm_password" type="password" minlength="8" required>
+</div>
+</div>
+</section>
+
+<section>
+<h2>04 — Registration Payment</h2>
+<div class="payment" id="paymentDetails">
+Loading school payment details...
+</div>
+<div class="grid">
+<div class="field">
+<label>Depositor Name *</label>
+<input id="depositor_name" required>
+</div>
+<div class="field">
+<label>Payment Reference *</label>
+<input id="payment_reference" required>
+</div>
+<div class="field">
+<label>Amount Deposited *</label>
+<input id="deposited_amount" type="number" min="0.01" step="0.01" required>
+</div>
+<div class="field">
+<label>Deposit Date *</label>
+<input id="deposit_date" type="date" required>
+</div>
+</div>
+<div class="notice">
+Your registration payment is mandatory. Your application will remain pending until an administrator verifies your payment. Submitting payment details does not activate your account.
+</div>
+</section>
+
+<button type="submit" id="submitButton">Submit Registration</button>
+<div id="message"></div>
+</form>
+</div>
+
+<footer>
+Bulchana School | Student Management System
+</footer>
+</div>
+
+<script>
+const endpoint =
+"https://nsizlqqtufhuwnuyldny.supabase.co/functions/v1/student-registration";
+
+const form = document.getElementById("registrationForm");
+const message = document.getElementById("message");
+const button = document.getElementById("submitButton");
+const grade = document.getElementById("current_grade");
+const streamBox = document.getElementById("streamBox");
+const stream = document.getElementById("stream");
+
+grade.addEventListener("change", () => {
+  const show = ["Grade 11","Grade 12"].includes(grade.value);
+  streamBox.style.display = show ? "block" : "none";
+  stream.required = false;
+});
+
+async function callBackend(payload) {
+  const {data,error} = await supabaseClient.functions.invoke(
+    "student-registration",
+    {body:payload}
+  );
+
+  if(error) throw error;
+  if(data?.error) throw new Error(data.error);
+  return data;
+}
+
+async function loadPaymentSettings() {
+  const box = document.getElementById("paymentDetails");
+
+  try {
+    const result = await callBackend({action:"config"});
+    const s = result.settings;
+
+    box.replaceChildren();
+
+    [
+      ["Bank",s.bank_name],
+      ["Account Number",s.account_number],
+      ["Account Holder",s.account_holder],
+      ["Registration Fee",`${s.registration_fee_amount} ${s.currency}`]
+    ].forEach(([label,value]) => {
+      const line = document.createElement("div");
+      const strong = document.createElement("strong");
+      strong.textContent = label + ": ";
+      line.append(strong,document.createTextNode(value || "Not configured"));
+      box.appendChild(line);
+    });
+
+    document.getElementById("deposited_amount").value =
+      s.registration_fee_amount || "";
+  } catch(error) {
+    box.textContent = "Unable to load school payment details.";
+  }
+}
+
+function showMessage(text,type) {
+  message.textContent = text;
+  message.className = type;
+}
+
+form.addEventListener("submit",async event => {
+  event.preventDefault();
+  message.className = "";
+
+  const password = document.getElementById("password").value;
+  const confirmation = document.getElementById("confirm_password").value;
+
+  if(password !== confirmation) {
+    showMessage("Passwords do not match.","error");
+    return;
+  }
+
+  if(password.length < 8) {
+    showMessage("Password must have at least 8 characters.","error");
+    return;
+  }
+
+  button.disabled = true;
+  button.textContent = "Submitting...";
+
+  try {
+    const result = await callBackend({
+      action:"register",
+
+      first_name:document.getElementById("first_name").value.trim(),
+      middle_name:document.getElementById("middle_name").value.trim(),
+      last_name:document.getElementById("last_name").value.trim(),
+      date_of_birth:document.getElementById("date_of_birth").value,
+      gender:document.getElementById("gender").value,
+      address:document.getElementById("address").value.trim(),
+      phone_number:document.getElementById("phone_number").value.trim(),
+      current_grade:grade.value,
+
+      stream:stream.value || null,
+
+      email:document.getElementById("email").value.trim(),
+      password:password,
+
+      depositor_name:document.getElementById("depositor_name").value.trim(),
+      payment_reference:document.getElementById("payment_reference").value.trim(),
+      deposited_amount:Number(document.getElementById("deposited_amount").value),
+      deposit_date:document.getElementById("deposit_date").value
+    });
+
+    showMessage(
+      result.message || "Registration submitted successfully.",
+      "success"
+    );
+
+    form.reset();
+    streamBox.style.display = "none";
+
+  } catch(error) {
+    showMessage(error.message || "Registration failed.","error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Submit Registration";
+  }
+});
+
+loadPaymentSettings();
+</script>
+</body>
+</html>
