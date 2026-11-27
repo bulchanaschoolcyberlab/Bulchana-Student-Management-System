@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News & Announcements | Bulchana School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy:#102747;
+  --deep:#091a30;
+  --blue:#1765c1;
+  --gold:#e5ad42;
+  --light:#f4f7fb;
+  --white:#fff;
+  --text:#26364a;
+  --muted:#718096;
+  --border:#e4eaf2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);line-height:1.7}
+h1,h2,h3,h4{font-family:'Manrope',sans-serif;line-height:1.25;color:var(--navy)}
+a{text-decoration:none;color:inherit}
+.container{width:min(1140px,92%);margin:auto}
+
+.topbar{background:var(--deep);color:#dce6f3;padding:9px 0;font-size:12px}
+.topbar-inner{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+header{background:white;position:sticky;top:0;z-index:100;box-shadow:0 3px 18px #10274712}
+.nav{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:45px;height:45px;border-radius:12px;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-weight:800;font-size:19px}
+.brand-name{font-weight:800;color:var(--navy);font-size:18px}
+.brand-sub{font-size:10px;color:var(--muted);letter-spacing:1px}
+.nav-links{display:flex;align-items:center;gap:22px}
+.nav-links a{font-size:13px;font-weight:700;color:#34465d}
+.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.nav-links .login{background:var(--blue);color:white;padding:11px 18px;border-radius:8px}
+.menu-btn{display:none;border:0;background:var(--light);color:var(--navy);width:42px;height:42px;border-radius:9px;font-size:23px;cursor:pointer}
+
+.hero{
+ min-height:350px;
+ display:flex;
+ align-items:center;
+ color:white;
+ background:linear-gradient(90deg,rgba(7,24,46,.95),rgba(7,24,46,.68)),
+ url('https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1800&q=85') center/cover;
+}
+.hero-content{padding:75px 0}
+.eyebrow{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:17px;display:inline-block}
+.hero h1{color:white;font-size:clamp(38px,6vw,58px);max-width:750px;margin-bottom:18px}
+.hero p{color:#e1e9f3;max-width:650px;font-size:16px}
+
+section{padding:70px 0}
+.section-label{color:var(--blue);text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;margin-bottom:12px}
+.section-title{font-size:clamp(27px,4vw,38px);margin-bottom:15px}
+.section-desc{max-width:700px;color:var(--muted);font-size:15px}
+.center{text-align:center}
+.center .section-desc{margin:auto}
+
+.news-layout{display:grid;grid-template-columns:1fr 310px;gap:35px;align-items:start}
+.news-list{display:grid;gap:20px}
+.news-card{border:1px solid var(--border);border-radius:15px;overflow:hidden;background:white;transition:.2s}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px #10274712}
+.news-image{height:210px;background:var(--light);display:grid;place-items:center;overflow:hidden}
+.news-image img{width:100%;height:100%;object-fit:cover}
+.news-content{padding:25px}
+.news-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;font-size:11px;color:var(--muted)}
+.tag{background:#eaf2fc;color:var(--blue);padding:5px 10px;border-radius:20px;font-weight:800}
+.news-content h3{font-size:21px;margin-bottom:10px}
+.news-content p{font-size:14px;color:var(--muted)}
+.news-footer{border-top:1px solid var(--border);margin-top:18px;padding-top:15px;font-size:12px;color:var(--muted)}
+
+.sidebar{display:grid;gap:20px}
+.side-card{border:1px solid var(--border);border-radius:14px;padding:23px;background:white}
+.side-card h3{font-size:18px;margin-bottom:15px}
+.side-links{display:grid;gap:12px}
+.side-links a{font-size:13px;color:#526176;border-bottom:1px solid var(--border);padding-bottom:10px}
+.side-links a:hover{color:var(--blue)}
+.notice{background:#fff8e9;border:1px solid #f0dfb8;border-radius:14px;padding:22px}
+.notice h3{font-size:17px;margin-bottom:9px}
+.notice p{font-size:13px;color:#66583e}
+
+.empty-state{padding:35px 25px;border:1px dashed #cbd6e4;border-radius:14px;text-align:center;background:var(--light)}
+.empty-state strong{display:block;color:var(--navy);font-size:16px;margin-bottom:7px}
+.empty-state p{font-size:13px;color:var(--muted)}
+
+.cta{background:var(--navy);color:white;text-align:center;padding:60px 20px}
+.cta h2{color:white;font-size:clamp(26px,4vw,36px);margin-bottom:13px}
+.cta p{color:#d2dfed;max-width:620px;margin:0 auto 25px;font-size:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 22px;border-radius:8px;font-size:13px;font-weight:800;transition:.2s}
+.btn:hover{transform:translateY(-3px)}
+.btn-primary{background:var(--gold);color:var(--deep)}
+.btn-outline{border:1px solid #ffffff85;color:white}
+
+footer{background:var(--deep);color:#c9d5e3;padding:50px 0 20px}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:35px;padding-bottom:35px}
+.footer-brand{color:white;font-size:20px;font-weight:800;margin-bottom:12px}
+footer p{font-size:13px;color:#aebdce;max-width:310px}
+footer h4{color:white;font-size:14px;margin-bottom:17px}
+.footer-links{display:grid;gap:10px}
+.footer-links a{font-size:13px;color:#b8c7d8}
+.footer-links a:hover{color:var(--gold)}
+.copyright{border-top:1px solid #ffffff20;padding-top:20px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11px;color:#94a8bd}
+
+@media(max-width:850px){
+ .nav-links{display:none;position:absolute;top:78px;left:0;right:0;background:white;padding:20px 5%;box-shadow:0 12px 20px #10274715;flex-direction:column;align-items:stretch;gap:0}
+ .nav-links.show{display:flex}
+ .nav-links a{padding:12px 0}
+ .nav-links .login{text-align:center;margin-top:8px}
+ .menu-btn{display:block}
+ .news-layout{grid-template-columns:1fr}
+ .sidebar{grid-template-columns:1fr 1fr}
+ .footer-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:580px){
+ section{padding:55px 0}
+ .hero{min-height:390px}
+ .hero-content{padding:60px 0}
+ .sidebar{grid-template-columns:1fr}
+ .footer-grid{grid-template-columns:1fr 1fr;gap:25px}
+ .topbar-inner{justify-content:center;text-align:center}
+ .news-content{padding:20px}
+}
+</style>
+</head>
+
+<body>
+<div class="topbar">
+ <div class="container topbar-inner">
+  <span>Welcome to Bulchana School</span>
+  <span>Learning Today · Leading Tomorrow</span>
+ </div>
+</div>
+
+<header>
+ <div class="container nav">
+  <a href="index.html" class="brand">
+   <div class="logo">B</div>
+   <div>
+    <div class="brand-name">BULCHANA SCHOOL</div>
+    <div class="brand-sub">EDUCATION FOR EXCELLENCE</div>
+   </div>
+  </a>
+  <button class="menu-btn" id="menuBtn" aria-label="Open navigation" aria-expanded="false">☰</button>
+  <nav class="nav-links" id="navLinks">
+   <a href="index.html">Home</a>
+   <a href="about.html">About</a>
+   <a href="academics.html">Academics</a>
+   <a href="admissions.html">Admissions</a>
+   <a href="announcements.html" class="active">News</a>
+   <a href="contact.html">Contact</a>
+   <a href="login.html" class="login">Student Portal ↗</a>
+  </nav>
+ </div>
+</header>
+
+<main>
+<section class="hero">
+ <div class="container hero-content">
+  <span class="eyebrow">Bulchana School Updates</span>
+  <h1>News & Announcements</h1>
+  <p>Stay informed about school notices, academic updates, important dates, and activities at Bulchana School.</p>
+ </div>
+</section>
+
+<section>
+ <div class="container">
+  <div class="section-label">Stay Connected</div>
+  <h2 class="section-title">Latest School Updates</h2>
+  <p class="section-desc">Official school information and announcements will be shared here.</p>
+
+  <div class="news-layout" style="margin-top:35px">
+   <div class="news-list">
+    <div class="empty-state">
+     <strong>No announcements published yet.</strong>
+     <p>When the school publishes an official announcement, it will appear here.</p>
+    </div>
+   </div>
+
+   <aside class="sidebar">
+    <div class="side-card">
+     <h3>Quick Links</h3>
+     <div class="side-links">
+      <a href="admissions.html">Admission Information</a>
+      <a href="academics.html">Academic Programs</a>
+      <a href="login.html">Student Portal</a>
+      <a href="contact.html">Contact the School</a>
+     </div>
+    </div>
+
+    <div class="notice">
+     <h3>📢 Important Notice</h3>
+     <p>Always follow information shared through official school channels. Do not rely on unverified messages or payment instructions.</p>
+    </div>
+   </aside>
+  </div>
+ </div>
+</section>
+
+<section class="cta">
+ <div class="container">
+  <div class="section-label">Bulchana School</div>
+  <h2>Stay Connected With Your School</h2>
+  <p>Visit the student portal for your account and available school services.</p>
+  <a href="login.html" class="btn btn-primary">Open Student Portal →</a>
+  <a href="contact.html" class="btn btn-outline" style="margin-left:8px">Contact Us</a>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="container">
+  <div class="footer-grid">
+   <div>
+    <div class="footer-brand">BULCHANA SCHOOL</div>
+    <p>Empowering students through quality education, technology, innovation, and a commitment to a brighter future.</p>
+   </div>
+   <div>
+    <h4>Explore</h4>
+    <div class="footer-links">
+     <a href="index.html">Home</a>
+     <a href="about.html">About Us</a>
+     <a href="academics.html">Academics</a>
+     <a href="admissions.html">Admissions</a>
+    </div>
+   </div>
+   <div>
+    <h4>Student Resources</h4>
+    <div class="footer-links">
+     <a href="login.html">Student Portal</a>
+     <a href="digital-learning.html">Digital Learning</a>
+     <a href="announcements.html">Announcements</a>
+     <a href="student-life.html">Student Life</a>
+    </div>
+   </div>
+   <div>
+    <h4>Connect</h4>
+    <div class="footer-links">
+     <a href="contact.html">Contact Us</a>
+     <a href="login.html">Teacher Portal</a>
+     <a href="login.html">Admin Portal</a>
+    </div>
+   </div>
+  </div>
+  <div class="copyright">
+   <span>© <span id="year"></span> Bulchana School. All rights reserved.</span>
+   <span>IT Department | Technology | Innovation</span>
+  </div>
+ </div>
+</footer>
+
+<script>
+const menuBtn=document.getElementById('menuBtn');
+const navLinks=document.getElementById('navLinks');
+
+menuBtn.addEventListener('click',()=>{
+ const isOpen=navLinks.classList.toggle('show');
+ menuBtn.setAttribute('aria-expanded',String(isOpen));
+ menuBtn.textContent=isOpen?'✕':'☰';
+});
+
+navLinks.querySelectorAll('a').forEach(link=>{
+ link.addEventListener('click',()=>{
+  navLinks.classList.remove('show');
+  menuBtn.setAttribute('aria-expanded','false');
+  menuBtn.textContent='☰';
+ });
+});
+
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
